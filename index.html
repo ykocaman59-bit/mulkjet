@@ -22,7 +22,7 @@
                 <a href="#ilanlar-bolumu" class="text-gray-600 hover:text-red-600 font-medium text-sm hidden sm:inline">İlanları Gez</a>
                 
                 <!-- Google Giriş Butonu -->
-                <button onclick="alert('Google ile Giriş Sistemi Yakında Aktif Olacaktır!')" class="flex items-center gap-2 border border-gray-300 hover:bg-gray-50 text-gray-700 px-3 py-1.5 rounded-lg text-sm font-medium transition shadow-sm">
+                <button onclick="alert('Google ile Giriş Sistemi: Sunucu ve Firebase kurulumundan sonra aktif olacaktır.')" class="flex items-center gap-2 border border-gray-300 hover:bg-gray-50 text-gray-700 px-3 py-1.5 rounded-lg text-sm font-medium transition shadow-sm cursor-pointer">
                     <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-4 h-4" alt="Google">
                     <span>Google ile Giriş Yap</span>
                 </button>
@@ -79,35 +79,32 @@
                         </div>
                     </div>
 
-                    <!-- Bölge Seçim Adımları -->
-                    <div>
-                        <label class="block text-sm font-medium mb-1">Bölge Seçiniz</label>
-                        <select id="ilanBolge" required onchange="ilceGuncelle()" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 outline-none text-sm mb-2">
-                            <option value="">-- Bölge Seçin --</option>
-                            <option value="anadolu">İstanbul Anadolu Yakası</option>
-                            <option value="avrupa">İstanbul Avrupa Yakası</option>
-                        </select>
-                    </div>
-
+                    <!-- Tüm Türkiye İl / İlçe Seçimi -->
                     <div class="grid grid-cols-2 gap-2">
                         <div>
-                            <label class="block text-sm font-medium mb-1">İlçe</label>
-                            <select id="ilanIlce" required onchange="mahalleGuncelle()" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 outline-none text-sm">
-                                <option value="">Önce Bölge Seçin</option>
+                            <label class="block text-sm font-medium mb-1">İl</label>
+                            <select id="ilanIl" required onchange="ilceleriYukle()" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 outline-none text-sm">
+                                <option value="">Seçiniz</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium mb-1">Mahalle</label>
-                            <select id="ilanMahalle" required class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 outline-none text-sm">
-                                <option value="">Önce İlçe Seçin</option>
+                            <label class="block text-sm font-medium mb-1">İlçe</label>
+                            <select id="ilanIlce" required class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 outline-none text-sm">
+                                <option value="">Önce İl Seçin</option>
                             </select>
                         </div>
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium mb-1">Görsel Linki (URL)</label>
-                        <input type="url" id="ilanGorsel" placeholder="Varsa internet üzerindeki fotoğraf linki" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 outline-none text-sm">
-                        <p class="text-[10px] text-gray-400 mt-1">Boş bırakılırsa standart bir ev kapak fotoğrafı atanır.</p>
+                        <label class="block text-sm font-medium mb-1">Mahalle / Semt / Açık Adres</label>
+                        <input type="text" id="ilanMahalleAdres" required placeholder="Mahalle adı ve sokak detaylarını girin" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 outline-none text-sm">
+                    </div>
+
+                    <!-- Galeriden Fotoğraf Seçme Alanı -->
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Fotoğraf Yükle</label>
+                        <input type="file" id="ilanDosya" accept="image/*" required class="w-full px-2 py-1.5 border rounded-lg text-xs text-gray-600 focus:ring-2 focus:ring-red-500 outline-none bg-gray-50 cursor-pointer">
+                        <p class="text-[10px] text-gray-400 mt-1">Lütfen yanıltıcı olmaması için mülkün gerçek bir fotoğrafını seçin.</p>
                     </div>
 
                     <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2.5 rounded-lg transition shadow-sm cursor-pointer text-sm">
@@ -120,11 +117,11 @@
         <!-- SAĞ TARAF: Aktif İlanlar Listesi -->
         <section id="ilanlar-bolumu" class="lg:col-span-2">
             <h2 class="text-2xl font-bold mb-6 flex items-center gap-2 text-gray-900">
-                🏠 Güncel İlanlar <span id="ilanSayac" class="bg-red-100 text-red-600 text-xs px-2.5 py-1 rounded-full">3 İlan</span>
+                🏠 Güncel İlanlar <span id="ilanSayac" class="bg-red-100 text-red-600 text-xs px-2.5 py-1 rounded-full">0 İlan</span>
             </h2>
             
             <div id="ilanListesi" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Dinamik ilanlar buraya yüklenecek -->
+                <!-- Dinamik ilanlar buraya yüklenecek veya boş uyarısı çıkacak -->
             </div>
         </section>
 
@@ -138,74 +135,40 @@
 
     <!-- DİNAMİK MANTIK & VERİ YÖNETİMİ -->
     <script>
-        // İlçe ve Mahalle Data Havuzu
-        const bölgeData = {
-            anadolu: {
-                "Sultanbeyli": ["Ahmet Yesevi", "Battalgazi", "Fatih Mah.", "Mimar Sinan"],
-                "Kadıköy": ["Moda", "Caddebostan", "Fenerbahçe", "Göztepe"],
-                "Ümraniye": ["Çakmak", "İnkılap", "Namık Kemal", "Ihlamurkuyu"]
-            },
-            avrupa: {
-                "Beşiktaş": ["Bebek", "Etiler", "Ortaköy", "Levent"],
-                "Şişli": ["Mecidiyeköy", "Nişantaşı", "Feriköy", "Kurtuluş"],
-                "Esenyurt": ["Cumhuriyet", "Güzelyurt", "Piri Reis", "Mehterçeşme"]
-            }
-        };
+        let ilanlar = [];
+        let tumSehirlerVerisi = [];
 
-        let ilanlar = [
-            {
-                id: 1,
-                baslik: "Sultanbeyli Merkezde Geniş ve Ferah Satılık Daire",
-                fiyat: "3.450.000",
-                oda: "3+1",
-                konum: "Sultanbeyli / Fatih Mah.",
-                gorsel: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=500&q=80"
-            },
-            {
-                id: 2,
-                baslik: "Sahile Yürüme Mesafesinde Lüx Yapım Daire",
-                fiyat: "7.200.000",
-                oda: "2+1",
-                konum: "Kadıköy / Moda",
-                gorsel: "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=500&q=80"
-            },
-            {
-                id: 3,
-                baslik: "Metrobüse Yakın Önü Açık Acil Satılık Uygun Fiyat",
-                fiyat: "2.850.000",
-                oda: "3+1",
-                konum: "Esenyurt / Cumhuriyet",
-                gorsel: "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=500&q=80"
-            }
-        ];
-
-        // Dinamik İlçe Güncelleme Fonksiyonu
-        function ilceGuncelle() {
-            const bolge = document.getElementById('ilanBolge').value;
-            const ilceSelect = document.getElementById('ilanIlce');
-            const mahalleSelect = document.getElementById('ilanMahalle');
-            
-            ilceSelect.innerHTML = '<option value="">-- İlçe Seçin --</option>';
-            mahalleSelect.innerHTML = '<option value="">Önce İlçe Seçin</option>';
-
-            if (bolge && bölgeData[bolge]) {
-                Object.keys(bölgeData[bolge]).forEach(ilce => {
-                    ilceSelect.innerHTML += `<option value="${ilce}">${ilce}</option>`;
+        // Sayfa açıldığında Türkiye'nin tüm illerini internetten çeken fonksiyon
+        async function illeriGetir() {
+            try {
+                const response = await fetch('https://turkiyeapi.dev/api/v1/provinces?sort=name');
+                const data = await response.json();
+                tumSehirlerVerisi = data.data;
+                
+                const ilSelect = document.getElementById('ilanIl');
+                ilSelect.innerHTML = '<option value="">-- İl Seçin --</option>';
+                
+                tumSehirlerVerisi.forEach(il => {
+                    ilSelect.innerHTML += `<option value="${il.id}">${il.name}</option>`;
                 });
+            } catch (error) {
+                console.error("Şehir verileri yüklenemedi:", error);
             }
         }
 
-        // Dinamik Mahalle Güncelleme Fonksiyonu
-        function mahalleGuncelle() {
-            const bolge = document.getElementById('ilanBolge').value;
-            const ilce = document.getElementById('ilanIlce').value;
-            const mahalleSelect = document.getElementById('ilanMahalle');
+        // Seçilen ile göre ilçeleri dinamik dolduran fonksiyon
+        function ilceleriYukle() {
+            const secilenIlId = document.getElementById('ilanIl').value;
+            const ilceSelect = document.getElementById('ilanIlce');
+            
+            ilceSelect.innerHTML = '<option value="">-- İlçe Seçin --</option>';
+            
+            if (!secilenIlId) return;
 
-            mahalleSelect.innerHTML = '<option value="">-- Mahalle Seçin --</option>';
-
-            if (bolge && ilce && bölgeData[bolge][ilce]) {
-                bölgeData[bolge][ilce].forEach(mahalle => {
-                    mahalleSelect.innerHTML += `<option value="${mahalle}">${mahalle}</option>`;
+            const bulunanIl = tumSehirlerVerisi.find(il => il.id == secilenIlId);
+            if (bulunanIl && bulunanIl.districts) {
+                bulunanIl.districts.forEach(ilce => {
+                    ilceSelect.innerHTML += `<option value="${ilce.name}">${ilce.name}</option>`;
                 });
             }
         }
@@ -218,6 +181,18 @@
         function ilanlariRenderEt() {
             ilanListesi.innerHTML = '';
             ilanSayac.textContent = `${ilanlar.length} İlan`;
+
+            if (ilanlar.length === 0) {
+                ilanListesi.className = "col-span-full text-center py-12 bg-white rounded-2xl border border-dashed border-gray-200";
+                ilanListesi.innerHTML = `
+                    <div class="text-4xl mb-3">📭</div>
+                    <p class="text-gray-500 font-medium">Henüz aktif ilan bulunmuyor.</p>
+                    <p class="text-xs text-gray-400 mt-1">Sol taraftaki formu doldurarak ilk ilanı siz ekleyebilirsiniz.</p>
+                `;
+                return;
+            }
+
+            ilanListesi.className = "grid grid-cols-1 md:grid-cols-2 gap-6";
 
             ilanlar.forEach(ilan => {
                 const kart = document.createElement('div');
@@ -235,10 +210,16 @@
                                 <span class="bg-gray-100 px-2 py-1 rounded">📍 ${ilan.konum}</span>
                             </div>
                         </div>
-                        <div class="border-t pt-3 mt-2 flex justify-between items-center">
-                            <span class="text-lg font-extrabold text-red-600">${ilan.fiyat} TL</span>
-                            <button onclick="haritaGoster('${ilan.konum}')" class="text-xs bg-gray-900 hover:bg-gray-700 text-white font-medium px-3 py-1.5 rounded-lg transition">
-                                Harita & Komisyon
+                        <div class="border-t pt-3 mt-2 flex flex-col gap-2">
+                            <div class="flex justify-between items-center">
+                                <span class="text-lg font-extrabold text-red-600">${ilan.fiyat} TL</span>
+                                <button onclick="haritaGoster('${ilan.konum}')" class="text-xs bg-gray-900 hover:bg-gray-700 text-white font-medium px-2.5 py-1.5 rounded-lg transition cursor-pointer">
+                                    Haritada Gör
+                                </button>
+                            </div>
+                            <!-- İlan Silme Butonu -->
+                            <button onclick="ilanSil(${ilan.id})" class="w-full text-center text-xs bg-red-50 hover:bg-red-100 text-red-600 font-semibold py-1.5 rounded-lg transition mt-1 cursor-pointer">
+                                🗑️ Bu İlanı Kaldır
                             </button>
                         </div>
                     </div>
@@ -247,48 +228,61 @@
             });
         }
 
-        // İnteraktif Harita ve Komisyon Bilgilendirmesi
+        // Gerçek Harita ve Komisyon Bilgilendirmesi
         function haritaGoster(konum) {
-            alert(`📍 Konum: ${konum}\n\n🗺️ Harita Altyapısı: Bu konum için OpenStreetMap/Google Haritalar koordinat yerleşimi yapılmıştır.\n\n💰 Komisyon Hak edişi: Bu ilanın satış sürecinden kasaya %2 hizmet bedeli aktarılacaktır.`);
+            const haritaUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(konum)}`;
+            alert(`💰 İş Ortaklığı: Bu ilanın satış sürecinden kasaya %2 hizmet komisyonu aktarılacaktır.\n\nHaritayı gör butonuna tıkladığınızda Google Haritalar üzerinde "${konum}" araması açılacaktır.`);
+            window.open(haritaUrl, '_blank');
         }
 
-        // Form Gönderildiğinde Tetiklenen İşlem
+        // İlan Silme Fonksiyonu
+        function ilanSil(id) {
+            if (confirm("Bu ilanı sistemden kaldırmak istediğinize emin misiniz?")) {
+                ilanlar = ilanlar.filter(ilan => ilan.id !== id);
+                ilanlariRenderEt();
+            }
+        }
+
+        // Form Gönderildiğinde (Galeriden Resim Okuma Dahil) Çalışan Kısım
         emlakForm.addEventListener('submit', function(e) {
             e.preventDefault();
 
             const baslik = document.getElementById('ilanBaslik').value;
             let fiyat = document.getElementById('ilanFiyat').value;
             const oda = document.getElementById('ilanOda').value;
-            const ilce = document.getElementById('ilanIlce').value;
-            const mahalle = document.getElementById('ilanMahalle').value;
-            let gorsel = document.getElementById('ilanGorsel').value;
+            
+            const ilSelect = document.getElementById('ilanIl');
+            const ilAdi = ilSelect.options[ilSelect.selectedIndex].text;
+            const ilceAdi = document.getElementById('ilanIlce').value;
+            const mahalleDetay = document.getElementById('ilanMahalleAdres').value;
+            
+            const dosyaGirdisi = document.getElementById('ilanDosya').files[0];
 
             fiyat = Number(fiyat).toLocaleString('tr-TR');
 
-            if (!gorsel) {
-                gorsel = "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=500&q=80";
-            }
+            // Galeriden seçilen resmi tarayıcının geçici belleğine alıp linke çeviriyoruz
+            const gorselUrl = URL.createObjectURL(dosyaGirdisi);
 
             ilanlar.unshift({
                 id: Date.now(),
                 baslik: baslik,
                 fiyat: fiyat,
                 oda: oda,
-                konum: `${ilce} / ${mahalle}`,
-                gorsel: gorsel
+                konum: `${ilAdi}, ${ilceAdi}, ${mahalleDetay}`,
+                gorsel: gorselUrl
             });
 
             ilanlariRenderEt();
             emlakForm.reset();
             
-            // İlçe-Mahalle alanlarını sıfırla
-            document.getElementById('ilanIlce').innerHTML = '<option value="">Önce Bölge Seçin</option>';
-            document.getElementById('ilanMahalle').innerHTML = '<option value="">Önce İlçe Seçin</option>';
+            document.getElementById('ilanIlce').innerHTML = '<option value="">Önce İl Seçin</option>';
 
-            alert("Harika! İlanınız başarıyla eklendi ve Acil Emlak komisyon havuzuna dahil edildi.");
+            alert("Harika! İlanınız galerideki gerçek görselinizle başarıyla eklendi.");
             document.getElementById('ilanlar-bolumu').scrollIntoView({ behavior: 'smooth' });
         });
 
+        // Sayfa açıldığında Türkiye verilerini yükle ve arayüzü çiz
+        illeriGetir();
         ilanlariRenderEt();
     </script>
 </body>
