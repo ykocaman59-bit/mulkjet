@@ -25,7 +25,7 @@
                 
                 <!-- Dinamik Giriş/Çıkış Buton Alanı -->
                 <div id="authButonAlani">
-                    <button onclick="sanalGirisYap()" class="flex items-center gap-2 border border-gray-300 hover:bg-gray-50 text-gray-700 px-3 py-1.5 rounded-lg text-sm font-medium transition shadow-sm cursor-pointer">
+                    <button type="button" onclick="sanalGirisYap()" class="flex items-center gap-2 border border-gray-300 hover:bg-gray-50 text-gray-700 px-3 py-1.5 rounded-lg text-sm font-medium transition shadow-sm cursor-pointer">
                         <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-4 h-4" alt="Google">
                         <span>Google ile Giriş Yap</span>
                     </button>
@@ -61,7 +61,7 @@
                 <div class="text-5xl mb-4 text-gray-400">🔒</div>
                 <h2 class="text-lg font-bold text-gray-900 mb-2">İlan Vermek İçin Giriş Yapın</h2>
                 <p class="text-xs text-gray-500 mb-6">Mülkjet güvenliği ve yanıltıcı ilanları önlemek amacıyla yalnızca kayıtlı üyeler ilan verebilir. Ziyaretçiler sadece ilanları inceleyebilir.</p>
-                <button onclick="sanalGirisYap()" class="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2.5 rounded-lg transition shadow-sm flex justify-center items-center gap-2 cursor-pointer text-sm">
+                <button type="button" onclick="sanalGirisYap()" class="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2.5 rounded-lg transition shadow-sm flex justify-center items-center gap-2 cursor-pointer text-sm">
                     <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-4 h-4 bg-white rounded-full p-0.5 shadow-xs" alt="Google">
                     Giriş Yap ve İlan Ver
                 </button>
@@ -117,7 +117,7 @@
                         <input type="text" id="ilanMahalleAdres" required placeholder="Mahalle adı ve sokak detaylarını girin" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 outline-none text-sm">
                     </div>
 
-                    <!-- İletişim Numarası (Arama Butonu İçin Şart) -->
+                    <!-- İletişim Numarası -->
                     <div>
                         <label class="block text-sm font-medium mb-1">İletişim Telefon Numarası</label>
                         <input type="tel" id="ilanTelefon" required placeholder="05551234567" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 outline-none text-sm">
@@ -154,15 +154,11 @@
     </footer>
 
     <script>
-        // Giriş Durumu Kontrol Değişkeni
         let kullaniciGirisYapti = false;
 
-        // İstanbul Avrupa ve Anadolu Tüm İlçeleri Bir Arada Havuz Verisi
         const sehirVeritabi = {
             "İstanbul": [
-                // Anadolu Yakası
                 "Sultanbeyli", "Kadıköy", "Ümraniye", "Pendik", "Kartal", "Maltepe", "Ataşehir", "Sancaktepe", "Üsküdar", "Beykoz", "Tuzla", "Çekmeköy", "Şile", "Adalar",
-                // Avrupa Yakası
                 "Esenyurt", "Küçükçekmece", "Bağcılar", "Avcılar", "Bahçelievler", "Sultangazi", "Başakşehir", "Gazanferpaşa", "Kağıthane", "Esenler", "Gaziosmanpaşa", "Beylikdüzü", "Sarıyer", "Fatih", "Güngören", "Arnavutköy", "Şişli", "Zeytinburnu", "Beşiktaş", "Bakırköy", "Beyoğlu", "Silivri", "Çatalca", "Büyükçekmece"
             ],
             "Ankara": ["Çankaya", "Keçiören", "Yenimahalle", "Mamak", "Etimesgut", "Sincan", "Altındağ", "Gölbaşı", "Pursaklar"],
@@ -176,19 +172,16 @@
 
         let ilanlar = [];
 
-        // Google Giriş Simülasyonu Fonksiyonu
         function sanalGirisYap() {
             kullaniciGirisYapti = true;
-            
-            // Arayüz Değişiklikleri
             document.getElementById('formKilitliAlan').classList.add('hidden');
             document.getElementById('formAcikAlan').classList.remove('hidden');
             
             document.getElementById('authButonAlani').innerHTML = `
                 <div class="flex items-center gap-2">
                     <div class="w-8 h-8 rounded-full bg-red-600 text-white flex items-center justify-center font-bold text-sm shadow">U</div>
-                    <span class="text-xs font-semibold text-gray-700 hidden sm:inline">Mülkjet Üyesi Active</span>
-                    <button onclick="sanalCikisYap()" class="text-[11px] text-red-600 underline ml-1 cursor-pointer">Çıkış</button>
+                    <span class="text-xs font-semibold text-gray-700 hidden sm:inline">Mülkjet Üyesi Aktif</span>
+                    <button type="button" onclick="sanalCikisYap()" class="text-[11px] text-red-600 underline ml-1 cursor-pointer">Çıkış</button>
                 </div>
             `;
             alert("Google ile giriş başarılı! Mülkjet dünyasına hoş geldiniz.");
@@ -200,7 +193,7 @@
             document.getElementById('formAcikAlan').classList.add('hidden');
             
             document.getElementById('authButonAlani').innerHTML = `
-                <button onclick="sanalGirisYap()" class="flex items-center gap-2 border border-gray-300 hover:bg-gray-50 text-gray-700 px-3 py-1.5 rounded-lg text-sm font-medium transition shadow-sm cursor-pointer">
+                <button type="button" onclick="sanalGirisYap()" class="flex items-center gap-2 border border-gray-300 hover:bg-gray-50 text-gray-700 px-3 py-1.5 rounded-lg text-sm font-medium transition shadow-sm cursor-pointer">
                     <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-4 h-4" alt="Google">
                     <span>Google ile Giriş Yap</span>
                 </button>
@@ -210,6 +203,7 @@
 
         function illeriDoldur() {
             const ilSelect = document.getElementById('ilanIl');
+            if(!ilSelect) return;
             ilSelect.innerHTML = '<option value="">-- İl Seçin --</option>';
             tumIller.forEach(il => {
                 ilSelect.innerHTML += `<option value="${il}">${il}</option>`;
@@ -219,9 +213,9 @@
         function ilceleriDoldur() {
             const secilenIl = document.getElementById('ilanIl').value;
             const ilceSelect = document.getElementById('ilanIlce');
+            if(!ilceSelect) return;
             
             ilceSelect.innerHTML = '<option value="">-- İlçe Seçin --</option>';
-            
             if (!secilenIl) return;
 
             if (sehirVeritabi[secilenIl]) {
@@ -238,6 +232,7 @@
         const ilanSayac = document.getElementById('ilanSayac');
 
         function ilanlariRenderEt() {
+            if(!ilanListesi) return;
             ilanListesi.innerHTML = '';
             ilanSayac.textContent = `${ilanlar.length} İlan`;
 
@@ -278,23 +273,22 @@
                         <div class="border-t pt-3 mt-2 flex flex-col gap-2">
                             <div class="flex justify-between items-center mb-1">
                                 <span class="text-lg font-extrabold text-red-600">${ilan.fiyat} TL</span>
-                                <button onclick="haritaGoster('${ilan.konum}')" class="text-[11px] bg-gray-900 hover:bg-gray-700 text-white font-medium px-2 py-1 rounded-lg transition cursor-pointer">
+                                <button type="button" onclick="haritaGoster('${ilan.konum}')" class="text-[11px] bg-gray-900 hover:bg-gray-700 text-white font-medium px-2 py-1 rounded-lg transition cursor-pointer">
                                     Harita
                                 </button>
                             </div>
                             
-                            <!-- İletişim Butonları -->
                             <div class="grid grid-cols-2 gap-2 mt-1">
-                                <button onclick="telefonEt('${ilan.tel}')" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-2 rounded-lg transition flex items-center justify-center gap-1 cursor-pointer shadow-xs">
+                                <button type="button" onclick="telefonEt('${ilan.tel}')" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-2 rounded-lg transition flex items-center justify-center gap-1 cursor-pointer shadow-xs">
                                     📞 Telefonla Ara
                                 </button>
-                                <button onclick="whatsappMesaj('${ilan.tel}')" class="bg-green-600 hover:bg-green-700 text-white text-xs font-bold py-2 rounded-lg transition flex items-center justify-center gap-1 cursor-pointer shadow-xs">
+                                <button type="button" onclick="whatsappMesaj('${ilan.tel}')" class="bg-green-600 hover:bg-green-700 text-white text-xs font-bold py-2 rounded-lg transition flex items-center justify-center gap-1 cursor-pointer shadow-xs">
                                     💬 WhatsApp
                                 </button>
                             </div>
 
-                            <button onclick="ilanSil(${ilan.id})" class="w-full text-center text-[10px] bg-red-50 hover:bg-red-100 text-red-500 font-semibold py-1 rounded-lg transition mt-1 cursor-pointer">
-                                🗑— İlanı Kaldır
+                            <button type="button" onclick="ilanSil(${ilan.id})" class="w-full text-center text-[10px] bg-red-50 hover:bg-red-100 text-red-500 font-semibold py-1 rounded-lg transition mt-1 cursor-pointer">
+                                🗑️ İlanı Kaldır
                             </button>
                         </div>
                     </div>
@@ -303,7 +297,6 @@
             });
         }
 
-        // Arama ve İletişim Aksiyonları
         function telefonEt(telNo) {
             alert(`Mülkjet telefon altyapısı bağlanıyor... Aramanız başlatılıyor.`);
             window.location.href = `tel:${telNo}`;
@@ -320,4 +313,67 @@
         function haritaGoster(konum) {
             const haritaUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(konum)}`;
             window.open(haritaUrl, '_blank');
-      
+        }
+
+        function ilanSil(id) {
+            if (confirm("Bu ilanı kaldırmak istediğinize emin misiniz?")) {
+                ilanlar = ilanlar.filter(ilan => ilan.id !== id);
+                ilanlariRenderEt();
+            }
+        }
+
+        if(emlakForm) {
+            emlakForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                if(!kullaniciGirisYapti) {
+                    alert("İlan eklemek için öncelikle giriş yapmalısınız!");
+                    return;
+                }
+
+                const baslik = document.getElementById('ilanBaslik').value;
+                let fiyat = document.getElementById('ilanFiyat').value;
+                const oda = document.getElementById('ilanOda').value;
+                const ilAdi = document.getElementById('ilanIl').value;
+                const ilceAdi = document.getElementById('ilanIlce').value;
+                const mahalleDetay = document.getElementById('ilanMahalleAdres').value;
+                const telefon = document.getElementById('ilanTelefon').value;
+                
+                const dosyaElementi = document.getElementById('ilanDosyalar');
+                
+                if (dosyaElementi.files.length > 10) {
+                    alert("En fazla 10 adet fotoğraf yükleyebilirsiniz!");
+                    return;
+                }
+
+                fiyat = Number(fiyat).toLocaleString('tr-TR');
+
+                let yüklenenGörseller = [];
+                for (let i = 0; i < dosyaElementi.files.length; i++) {
+                    yüklenenGörseller.push(URL.createObjectURL(dosyaElementi.files[i]));
+                }
+
+                ilanlar.unshift({
+                    id: Date.now(),
+                    baslik: baslik,
+                    fiyat: fiyat,
+                    oda: oda,
+                    konum: `${ilAdi}, ${ilceAdi}, ${mahalleDetay}`,
+                    tel: telefon,
+                    gorseller: yüklenenGörseller
+                });
+
+                ilanlariRenderEt();
+                emlakForm.reset();
+                document.getElementById('ilanIlce').innerHTML = '<option value="">Önce İl Seçin</option>';
+
+                alert("Harika! İlanınız Mülkjet güvencesiyle yayına alındı.");
+                document.getElementById('ilanlar-bolumu').scrollIntoView({ behavior: 'smooth' });
+            });
+        }
+
+        illeriDoldur();
+        ilanlariRenderEt();
+    </script>
+</body>
+</html>
