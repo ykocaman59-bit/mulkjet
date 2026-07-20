@@ -3,13 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mülkjet</title>
-    <!-- Tailwind CSS v4 -->
+    <title>Mülkjet Pro</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        /* Ekspertiz Şeması Renkleri */
+        .part-orijinal { background-color: #22c55e; color: white; }
+        .part-boyali { background-color: #eab308; color: black; }
+        .part-degisen { background-color: #ef4444; color: white; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800">
@@ -17,7 +21,6 @@
     <!-- Üst Menü / Navbar -->
     <nav class="bg-white shadow-md sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-            <!-- Tıklanınca Ana Sayfaya Yönlendiren Jet Emojili Logo -->
             <button type="button" id="logoBtn" class="text-2xl font-black text-red-600 flex items-center gap-1 tracking-tight cursor-pointer">
                 <span>🚀</span> MÜLK<span class="text-gray-900">JET</span>
             </button>
@@ -33,37 +36,32 @@
 
     <!-- ANA SAYFA GÖRÜNÜMÜ -->
     <div id="anaSayfaGorunumu" class="block">
-        <!-- Arama ve Karşılama Alanı -->
         <header class="bg-gradient-to-r from-red-600 to-orange-500 text-white py-12 px-4 text-center">
             <div class="max-w-4xl mx-auto">
-                <h1 class="text-4xl font-extrabold mb-4">Mülkjet ile Jet Hızıyla Ara Keşfet</h1>
-                <p class="text-sm opacity-90 mb-6">Emlak ve Vasıta kategorilerinde aradığınız ilana anında ulaşın.</p>
+                <h1 class="text-4xl font-extrabold mb-4">Mülkjet ile Detaylı Ara, Keşfet</h1>
+                <p class="text-sm opacity-90 mb-6">Gelişmiş ekspertiz şemalı ve derinlemesine filtrelemeli yeni nesil ilan platformu.</p>
                 <div class="bg-white p-2 rounded-xl shadow-lg flex flex-col md:flex-row gap-2 max-w-2xl mx-auto">
-                    <input type="text" id="hizliAraInput" placeholder="Kelimelerle arayın (Örn: kiralık daire, clio...)" class="flex-1 px-4 py-3 text-gray-800 focus:outline-none rounded-lg text-sm">
+                    <input type="text" id="hizliAraInput" placeholder="Kelimelerle arayın (Örn: Clio, kiralık, hasarsız...)" class="flex-1 px-4 py-3 text-gray-800 focus:outline-none rounded-lg text-sm">
                     <button id="hizliAraBtn" class="bg-gray-900 hover:bg-gray-800 text-white px-6 py-3 rounded-lg font-medium transition text-sm cursor-pointer">Ara</button>
                 </div>
             </div>
         </header>
 
-        <!-- Kategori Ağacı ve Listeleme -->
+        <!-- Kategori Ağacı ve Listeleme Ana Gövde -->
         <main class="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-4 gap-8">
-            <!-- SOL PANEL: Kategori Listesi ve Filtreler -->
+            <!-- SOL PANEL: Gelişmiş Filtreler ve Hiyerarşik Sayaçlar -->
             <aside class="lg:col-span-1 space-y-6">
-                <!-- Dinamik Sayıcı İçeren Kategori Ağacı -->
                 <div class="bg-white p-4 rounded-xl shadow-xs border border-gray-100">
                     <h3 class="font-bold text-gray-900 text-sm border-b pb-2 mb-3">📁 Kategoriler</h3>
-                    <div id="dinamikKategoriAgaci" class="text-xs space-y-1 text-gray-600">
-                        <!-- JS ile dinamik doldurulacak -->
-                    </div>
+                    <div id="dinamikKategoriAgaci" class="text-xs space-y-1 text-gray-600"></div>
                 </div>
 
-                <!-- Detaylı Filtreleme Seçenekleri (Adres ve Araç Detayları Dahil) -->
                 <div class="bg-white p-4 rounded-xl shadow-xs border border-gray-100 space-y-4">
-                    <h3 class="font-bold text-gray-900 text-sm border-b pb-2">🎛️ Detaylı Filtrele</h3>
+                    <h3 class="font-bold text-gray-900 text-sm border-b pb-2">🎛️ Derinlemesine Filtrele</h3>
                     
                     <div>
                         <label class="block text-xs font-semibold mb-1">Sıralama</label>
-                        <select id="filtreSiralama" class="w-full p-2 border rounded-md text-xs outline-none bg-white">
+                        <select id="filtreSiralama" class="w-full p-2 border rounded-md text-xs bg-white">
                             <option value="yeni">Tarihe Göre (En Yeni)</option>
                             <option value="fiyatArtan">Fiyat (Düşükten Yükseğe)</option>
                             <option value="fiyatAzalan">Fiyat (Yüksekten Düşüğe)</option>
@@ -72,52 +70,62 @@
 
                     <!-- Bölgesel Adres Filtresi -->
                     <div class="space-y-2 border-t pt-2">
-                        <label class="block text-xs font-bold text-gray-700">📍 Adres Filtresi</label>
-                        <select id="filtreIl" class="w-full p-2 border rounded-md text-xs outline-none bg-white">
-                            <option value="">Tüm İller</option>
-                        </select>
-                        <select id="filtreIlce" class="w-full p-2 border rounded-md text-xs outline-none bg-white">
-                            <option value="">Tüm İlçeler</option>
-                        </select>
-                        <input type="text" id="filtreMahalle" placeholder="Mahalle Adı Yazın" class="w-full p-2 border rounded-md text-xs outline-none bg-white">
+                        <label class="block text-xs font-bold text-gray-700">📍 İl / İlçe Filtresi</label>
+                        <select id="filtreIl" class="w-full p-2 border rounded-md text-xs bg-white"><option value="">Tüm İller</option></select>
+                        <select id="filtreIlce" class="w-full p-2 border rounded-md text-xs bg-white"><option value="">Tüm İlçeler</option></select>
+                        <input type="text" id="filtreMahalle" placeholder="Mahalle ismi yazın" class="w-full p-2 border rounded-md text-xs bg-white">
                     </div>
 
+                    <!-- Fiyat Aralığı -->
                     <div class="grid grid-cols-2 gap-2 border-t pt-2">
                         <div>
                             <label class="block text-xs font-semibold mb-1">Min Fiyat</label>
-                            <input type="number" id="filtreMinFiyat" placeholder="TL" class="w-full p-1.5 border rounded-md text-xs outline-none">
+                            <input type="number" id="filtreMinFiyat" class="w-full p-1.5 border rounded-md text-xs">
                         </div>
                         <div>
                             <label class="block text-xs font-semibold mb-1">Max Fiyat</label>
-                            <input type="number" id="filtreMaxFiyat" placeholder="TL" class="w-full p-1.5 border rounded-md text-xs outline-none">
+                            <input type="number" id="filtreMaxFiyat" class="w-full p-1.5 border rounded-md text-xs">
                         </div>
                     </div>
 
-                    <!-- Emlak Özel Alanı -->
-                    <div id="ozelEmlakFiltreleri" class="pt-2 border-t hidden">
-                        <label class="block text-xs font-semibold mb-1">Oda Sayısı</label>
-                        <select id="filtreOdaSayisi" class="w-full p-2 border rounded-md text-xs outline-none bg-white">
-                            <option value="">Tümü</option>
-                            <option value="1+1">1+1</option>
-                            <option value="2+1">2+1</option>
-                            <option value="3+1">3+1</option>
-                            <option value="4+1">4+1</option>
-                        </select>
-                    </div>
-
-                    <!-- Vasıta Özel Gelişmiş Filtreleri -->
-                    <div id="ozelVasitaFiltreleri" class="pt-2 border-t hidden space-y-2">
+                    <!-- Vasıta Derinlemesine Filtre Seçenekleri -->
+                    <div id="ozelVasitaFiltreleri" class="pt-2 border-t hidden space-y-3">
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="block text-xs font-semibold mb-1">Min Yıl</label>
+                                <input type="number" id="filtreMinYil" placeholder="2015" class="w-full p-1.5 border rounded-md text-xs">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold mb-1">Max Yıl</label>
+                                <input type="number" id="filtreMaxYil" placeholder="2026" class="w-full p-1.5 border rounded-md text-xs">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="block text-xs font-semibold mb-1">Min KM</label>
+                                <input type="number" id="filtreMinKm" class="w-full p-1.5 border rounded-md text-xs">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold mb-1">Max KM</label>
+                                <input type="number" id="filtreMaxKm" class="w-full p-1.5 border rounded-md text-xs">
+                            </div>
+                        </div>
                         <div>
                             <label class="block text-xs font-semibold mb-1">Vites Tipi</label>
-                            <select id="filtreVites" class="w-full p-2 border rounded-md text-xs outline-none bg-white">
+                            <select id="filtreVites" class="w-full p-2 border rounded-md text-xs bg-white">
                                 <option value="">Tümü</option>
                                 <option value="Manuel">Manuel</option>
                                 <option value="Otomatik">Otomatik</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold mb-1">Maksimum Kilometre (KM)</label>
-                            <input type="number" id="filtreMaxKm" placeholder="Örn: 150000" class="w-full p-1.5 border rounded-md text-xs outline-none">
+                            <label class="block text-xs font-semibold mb-1">Hasar Durumu</label>
+                            <select id="filtreHasar" class="w-full p-2 border rounded-md text-xs bg-white">
+                                <option value="">Tümü</option>
+                                <option value="Hasarsız">Hasarsız / Orijinal</option>
+                                <option value="Hasarlı">Hasar Kayıtlı (Tramerli)</option>
+                                <option value="Ağır Hasarlı">Ağır Hasar Kayıtlı</option>
+                            </select>
                         </div>
                     </div>
 
@@ -125,10 +133,10 @@
                 </div>
             </aside>
 
-            <!-- SAĞ PANEL: İlan Kartı Listesi -->
+            <!-- SAĞ PANEL: İlan Kartları -->
             <section class="lg:col-span-3">
                 <div class="flex justify-between items-center mb-4">
-                    <h2 id="ilanListesiBaslik" class="text-xl font-bold text-gray-900">🏠 Tüm İlanlar</h2>
+                    <h2 id="ilanListesiBaslik" class="text-xl font-bold text-gray-900">🏠 Canlı İlanlar</h2>
                     <span id="ilanSayac" class="bg-red-100 text-red-600 text-xs px-2.5 py-1 rounded-full font-bold">0 İlan</span>
                 </div>
                 <div id="ilanListesi" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"></div>
@@ -137,29 +145,50 @@
     </div>
 
     <!-- İLAN DETAY SAYFASI GÖRÜNÜMÜ -->
-    <div id="ilanDetayGorunumu" class="hidden max-w-5xl mx-auto px-4 py-8">
+    <div id="ilanDetayGorunumu" class="hidden max-w-6xl mx-auto px-4 py-8">
         <button type="button" id="detaydanGeriDonBtn" class="inline-flex items-center gap-2 text-sm font-bold text-gray-600 hover:text-red-600 mb-6 bg-white px-4 py-2 rounded-lg shadow-xs border border-gray-100 cursor-pointer">
-            ⬅️ İlan Listesine Geri Dön
+            ⬅️ İlan Listesine Dön
         </button>
         <div id="ilanDetayIcerikAlani"></div>
     </div>
 
-    <!-- İLAN VERME FORMU GÖRÜNÜMÜ -->
-    <div id="ilanVerFormGorunumu" class="hidden max-w-3xl mx-auto px-4 py-8">
-        <!-- Giriş Kilitli Alan -->
-        <div id="formKilitliAlan" class="bg-white p-8 rounded-2xl shadow-md border border-gray-100 text-center py-16">
-            <div class="text-5xl mb-4 text-gray-400">🔒</div>
-            <h2 class="text-xl font-bold text-gray-900 mb-2">İlan Vermek İçin Giriş Yapın</h2>
-            <button type="button" id="kilitliAlanGirisBtn" class="mx-auto bg-red-600 hover:bg-red-700 text-white font-medium px-6 py-3 rounded-xl transition shadow-sm flex items-center gap-2 cursor-pointer text-sm">
-                <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-4 h-4 bg-white rounded-full p-0.5 shadow-xs" alt="Google">
-                Google ile Giriş Yap
+    <!-- İLAN VERME VE GİRİŞ EKRANI -->
+    <div id="ilanVerFormGorunumu" class="hidden max-w-4xl mx-auto px-4 py-8">
+        <!-- Giriş Yapılamayan Cihazlar İçin Güvenli Hibrit Auth Paneli -->
+        <div id="formKilitliAlan" class="bg-white p-6 rounded-2xl shadow-md border border-gray-100 max-w-md mx-auto space-y-6">
+            <div class="text-center">
+                <div class="text-4xl mb-2">🔒</div>
+                <h2 class="text-lg font-bold text-gray-900">Devam Etmek İçin Giriş Yapın</h2>
+                <p class="text-xs text-gray-400">İlan vermek ve profilinizi yönetmek için bir yöntem seçin.</p>
+            </div>
+            
+            <button type="button" id="kilitliAlanGirisBtn" class="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2.5 rounded-xl transition flex items-center justify-center gap-2 cursor-pointer text-xs shadow-xs">
+                <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-4 h-4 bg-white rounded-full p-0.5" alt="Google">
+                Google Hesabı ile Hızlı Giriş
             </button>
+
+            <div class="relative flex py-2 items-center">
+                <div class="flex-grow border-t border-gray-200"></div>
+                <span class="flex-shrink mx-4 text-gray-400 text-[10px] font-bold uppercase">Veya E-posta İle</span>
+                <div class="flex-grow border-t border-gray-200"></div>
+            </div>
+
+            <!-- Google Hatası Alanlara Kesin Çözüm Sunan Form -->
+            <div class="space-y-3">
+                <input type="email" id="authEposta" placeholder="E-posta Adresiniz" class="w-full p-2 border rounded-lg text-xs outline-none bg-gray-50">
+                <input type="password" id="authSifre" placeholder="Şifreniz" class="w-full p-2 border rounded-lg text-xs outline-none bg-gray-50">
+                <div class="grid grid-cols-2 gap-2">
+                    <button type="button" id="btnEpostaKayit" class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-2 rounded-lg text-xs">Kaydol</button>
+                    <button type="button" id="btnEpostaGiris" class="bg-gray-900 hover:bg-gray-800 text-white font-bold py-2 rounded-lg text-xs">Giriş Yap</button>
+                </div>
+            </div>
         </div>
 
-        <!-- Açık İlan Formu -->
+        <!-- Akıllı Gelişmiş İlan Formu -->
         <div id="formAcikAlan" class="bg-white p-6 rounded-2xl shadow-md border border-gray-100 hidden">
             <h2 class="text-2xl font-black mb-6 flex items-center gap-2 text-gray-900 border-b pb-3">➕ Yeni İlan Oluştur</h2>
             <form id="emlakForm" class="space-y-6">
+                
                 <!-- Kategori Seçim Kademeleri -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-gray-50 p-4 rounded-xl">
                     <div>
@@ -181,49 +210,80 @@
 
                 <div>
                     <label class="block text-xs font-bold uppercase text-gray-500 mb-1">İlan Başlığı</label>
-                    <input type="text" id="ilanBaslik" required placeholder="İlan başlığı..." class="w-full px-3 py-2 border rounded-lg text-sm">
+                    <input type="text" id="ilanBaslik" required placeholder="Örn: Sahibinden temiz aile arabası" class="w-full px-3 py-2 border rounded-lg text-sm">
                 </div>
 
                 <div>
                     <label class="block text-xs font-bold uppercase text-gray-500 mb-1">İlan Açıklaması</label>
-                    <textarea id="ilanAciklama" required placeholder="İlan detayları..." class="w-full px-3 py-2 border rounded-lg text-sm h-28"></textarea>
+                    <textarea id="ilanAciklama" required placeholder="Araç veya gayrimenkulün genel durumunu detaylıca belirtin..." class="w-full px-3 py-2 border rounded-lg text-sm h-24"></textarea>
                 </div>
                 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-gray-50 p-4 rounded-xl">
-                    <div>
-                        <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Fiyat (TL)</label>
-                        <input type="number" id="ilanFiyat" required placeholder="Fiyat" class="w-full px-3 py-2 border rounded-lg text-sm bg-white">
-                    </div>
-                    
-                    <!-- Dinamik Alanlar -->
-                    <div id="formEmlakAlanlari" class="block">
-                        <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Oda Sayısı</label>
-                        <select id="ilanOda" class="w-full px-3 py-2 border rounded-lg text-sm bg-white">
-                            <option>1+1</option>
-                            <option>2+1</option>
-                            <option selected>3+1</option>
-                            <option>4+1</option>
-                        </select>
+                <!-- Teknik Detay Blokları -->
+                <div class="bg-gray-50 p-4 rounded-xl">
+                    <h4 class="text-xs font-bold text-gray-700 uppercase mb-3">⚙️ Teknik Özellikler</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-xs text-gray-600 mb-1">Fiyat (TL)</label>
+                            <input type="number" id="ilanFiyat" required class="w-full px-3 py-2 border rounded-lg text-sm bg-white">
+                        </div>
+
+                        <!-- Vasıta Ekstra Detay Girişleri -->
+                        <div id="formVasitaEkstraAlanlari" class="hidden col-span-2 grid grid-cols-3 gap-2">
+                            <div>
+                                <label class="block text-xs text-gray-600 mb-1">Model Yılı</label>
+                                <input type="number" id="ilanYil" placeholder="2020" class="w-full px-3 py-2 border rounded-lg text-sm bg-white">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-gray-600 mb-1">Kilometre (KM)</label>
+                                <input type="number" id="ilanKm" placeholder="85000" class="w-full px-3 py-2 border rounded-lg text-sm bg-white">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-gray-600 mb-1">Vites Tipi</label>
+                                <select id="ilanVites" class="w-full px-3 py-2 border rounded-lg text-sm bg-white">
+                                    <option>Manuel</option>
+                                    <option>Otomatik</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div id="formEmlakAlanlari" class="block">
+                            <label class="block text-xs text-gray-600 mb-1">Oda Sayısı</label>
+                            <select id="ilanOda" class="w-full px-3 py-2 border rounded-lg text-sm bg-white">
+                                <option>1+1</option><option>2+1</option><option selected>3+1</option><option>4+1</option>
+                            </select>
+                        </div>
                     </div>
 
-                    <div id="formVasitaAlanlari" class="hidden space-y-4 col-span-2 grid grid-cols-2 gap-2">
+                    <!-- Hasar Kaydı Girişi -->
+                    <div id="formVasitaHasarAlani" class="hidden mt-3 grid grid-cols-2 gap-4 border-t pt-3">
                         <div>
-                            <label class="block text-xs font-bold text-gray-600 mb-1">Vites Tipi</label>
-                            <select id="ilanVites" class="w-full px-3 py-2 border rounded-lg text-sm bg-white">
-                                <option>Manuel</option>
-                                <option>Otomatik</option>
+                            <label class="block text-xs text-gray-600 mb-1">Hasar Durumu</label>
+                            <select id="ilanHasarDurumu" class="w-full px-3 py-2 border rounded-lg text-sm bg-white">
+                                <option value="Hasarsız">Hasarsız / Orijinal</option>
+                                <option value="Hasarlı">Hasar Kayıtlı (Tramerli)</option>
+                                <option value="Ağır Hasarlı">Ağır Hasar Kayıtlı</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-gray-600 mb-1">Kilometre (KM)</label>
-                            <input type="number" id="ilanKm" placeholder="0" class="w-full px-3 py-2 border rounded-lg text-sm bg-white">
+                            <label class="block text-xs text-gray-600 mb-1">Tramer Tutarı (TL)</label>
+                            <input type="number" id="ilanTramerTutar" placeholder="0" class="w-full px-3 py-2 border rounded-lg text-sm bg-white">
                         </div>
                     </div>
                 </div>
 
-                <!-- Adres Seçimi -->
+                <!-- İNTERAKTİF EKSPERTİZ EKLEME ŞEMASI -->
+                <div id="formEkspertizSemasiAlani" class="hidden bg-gray-50 p-4 rounded-xl">
+                    <h4 class="text-xs font-bold text-gray-700 uppercase mb-2">🚗 Ekspertiz Şeması (Boyalı/Değişen Seçin)</h4>
+                    <p class="text-[10px] text-gray-400 mb-3">Parçaların üzerine tıklayarak durumunu değiştirin. (Yeşil: Orijinal, Sarı: Boyalı, Kırmızı: Değişen)</p>
+                    
+                    <div id="formEkspertizGrid" class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs font-semibold">
+                        <!-- JS ile parçalar basılacak -->
+                    </div>
+                </div>
+
+                <!-- Adres Alanı -->
                 <div class="bg-gray-50 p-4 rounded-xl space-y-3">
-                    <h4 class="text-xs font-bold text-gray-700 uppercase">📍 Adres Bilgisi</h4>
+                    <h4 class="text-xs font-bold text-gray-700 uppercase">📍 Tam Konum Bilgisi</h4>
                     <div class="grid grid-cols-2 gap-2">
                         <div>
                             <label class="block text-xs text-gray-600 mb-1">İl</label>
@@ -231,19 +291,17 @@
                         </div>
                         <div>
                             <label class="block text-xs text-gray-600 mb-1">İlçe</label>
-                            <select id="ilanIlce" required class="w-full px-3 py-2 border rounded-lg text-sm bg-white">
-                                <option value="">Seçiniz</option>
-                            </select>
+                            <select id="ilanIlce" required class="w-full px-3 py-2 border rounded-lg text-sm bg-white"><option value="">Seçiniz</option></select>
                         </div>
                     </div>
                     <div class="grid grid-cols-2 gap-2">
                         <div>
                             <label class="block text-xs text-gray-600 mb-1">Mahalle</label>
-                            <input type="text" id="ilanMahalle" required placeholder="Mahalle" class="w-full px-3 py-2 border rounded-lg text-sm bg-white">
+                            <input type="text" id="ilanMahalle" required placeholder="Örn: Ahmet Yesevi" class="w-full px-3 py-2 border rounded-lg text-sm bg-white">
                         </div>
                         <div>
                             <label class="block text-xs text-gray-600 mb-1">Sokak / Cadde</label>
-                            <input type="text" id="ilanSokak" required placeholder="Sokak" class="w-full px-3 py-2 border rounded-lg text-sm bg-white">
+                            <input type="text" id="ilanSokak" required placeholder="Örn: Fatih Caddesi" class="w-full px-3 py-2 border rounded-lg text-sm bg-white">
                         </div>
                     </div>
                 </div>
@@ -255,11 +313,11 @@
                     </div>
                     <div>
                         <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Fotoğraflar (Maks 10)</label>
-                        <input type="file" id="ilanDosyalar" accept="image/*" multiple required class="w-full px-2 py-1.5 border rounded-lg text-xs bg-white cursor-pointer">
+                        <input type="file" id="ilanDosyalar" accept="image/*" multiple class="w-full px-2 py-1.5 border rounded-lg text-xs bg-white cursor-pointer">
                     </div>
                 </div>
 
-                <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-lg text-sm cursor-pointer">
+                <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-lg text-sm cursor-pointer shadow-md">
                     İlanı Canlıya Al
                 </button>
             </form>
@@ -271,53 +329,27 @@
         <div class="bg-white rounded-2xl p-6 max-w-md w-full shadow-xl relative max-h-[90vh] overflow-y-auto">
             <button type="button" id="profilModalKapatBtn" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-xl font-bold cursor-pointer">&times;</button>
             <h3 class="text-xl font-bold text-gray-900 mb-4">Profil Ayarlarım</h3>
-            
             <div class="space-y-4">
                 <div>
-                    <label class="block text-xs font-bold text-gray-700 mb-1">Kayıtlı Telefon Numaralarım (Maks 3 Adet)</label>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Kayıtlı Telefonlarım (Maks 3 Adet)</label>
                     <div id="profilTelefonListesi" class="space-y-1 mb-2"></div>
                     <div id="telefonEklemeFormAlani" class="flex gap-2">
                         <input type="tel" id="yeniProfilTel" placeholder="05XXXXXXXXX" class="flex-1 px-3 py-1.5 border rounded-lg text-xs outline-none">
                         <button type="button" id="profilTelefonEkleBtn" class="bg-gray-900 text-white px-3 py-1.5 rounded-lg text-xs font-bold cursor-pointer">Ekle</button>
                     </div>
-                    <p id="telLimitUyari" class="text-[10px] text-red-500 font-semibold hidden">Maksimum 3 adet telefon numarası ekleyebilirsiniz.</p>
-                </div>
-
-                <div class="border-t pt-4 mt-6">
-                    <button type="button" id="hesabimiSilTetikleyiciBtn" class="w-full text-center text-xs bg-red-50 hover:bg-red-100 text-red-600 font-bold py-2 rounded-lg cursor-pointer">
-                        🚨 Hesabımı Sil (Profilimi Kapat)
-                    </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- PROFİL SİLME ANKET MODALİ -->
-    <div id="profilSilModal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center hidden p-4">
-        <div class="bg-white rounded-2xl p-6 max-w-md w-full shadow-xl relative">
-            <h3 class="text-xl font-bold text-red-600 mb-2">Hesabınızı Silmek İstediğinize Emin Misiniz?</h3>
-            <form id="profilSilmeForm" class="space-y-4">
-                <div class="text-xs space-y-2">
-                    <label class="flex items-center gap-2"><input type="radio" name="silmeNedeni" value="İşlemimi tamamladım" required> İşlemimi tamamladım</label>
-                    <label class="flex items-center gap-2"><input type="radio" name="silmeNedeni" value="Diğer"> Diğer</label>
-                </div>
-                <textarea id="silmeNedeniMetin" required placeholder="Geri bildiriminiz..." class="w-full p-2 border rounded-lg text-xs h-20 outline-none"></textarea>
-                <div class="flex gap-2">
-                    <button type="button" id="silmeVazgecBtn" class="flex-1 bg-gray-100 text-gray-700 font-bold py-2 rounded-lg text-xs cursor-pointer">Vazgeç</button>
-                    <button type="submit" class="flex-1 bg-red-600 text-white font-bold py-2 rounded-lg text-xs cursor-pointer">Profilimi Sil</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
     <footer class="bg-gray-900 text-gray-400 py-8 text-center mt-20">
-        <p class="text-sm">© 2026 Mülkjet Platformu. Tüm hakları sablıdır.</p>
+        <p class="text-sm">© 2026 Mülkjet Platformu. Tüm Hakları Saklıdır.</p>
     </footer>
 
-    <!-- FIREBASE & UYGULAMA MANTIĞI -->
+    <!-- Gelişmiş Uygulama Mantığı Scripti -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, signInWithRedirect, getRedirectResult, GoogleAuthProvider, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getAuth, signInWithRedirect, getRedirectResult, GoogleAuthProvider, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getFirestore, collection, addDoc, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -340,21 +372,39 @@
         let seciliFiltreKategoriPath = ["hepsi"]; 
         let genelAramaMetni = "";
 
+        // İnteraktif Araba Ekspertiz Parçaları Şablonu
+        const standartArabaParcaları = [
+            "Ön Tampon", "Kaput", "Tavan", "Arka Bagaj",
+            "Sağ Ön Çamurluk", "Sağ Ön Kapı", "Sağ Arka Kapı", "Sağ Arka Çamurluk",
+            "Sol Ön Çamurluk", "Sol Ön Kapı", "Sol Arka Kapı", "Sol Arka Çamurluk"
+        ];
+        let formAktifEkspertizVerisi = {};
+
         const sehirVeritabi = {
-            "İstanbul": ["Sultanbeyli", "Kadıköy", "Ümraniye", "Pendik"],
-            "Ankara": ["Çankaya", "Keçiören"],
-            "İzmir": ["Konak", "Bornova"]
+            "İstanbul": ["Sultanbeyli", "Kadıköy", "Ümraniye", "Pendik", "Kartal"],
+            "Ankara": ["Çankaya", "Keçiören", "Yenimahalle"],
+            "İzmir": ["Konak", "Bornova", "Karşıyaka"]
         };
 
+        // Genişletilmiş Profesyonel Global Otomobil Veri Ağacı
         const aracHiyerarsisi = {
             "Otomobil": {
-                "Renault": ["Clio", "Megane", "Symbol"],
-                "BMW": ["3 Serisi", "5 Serisi"],
-                "Audi": ["A3", "A4"]
+                "Renault": ["Clio", "Megane", "Symbol", "Taliant"],
+                "BMW": ["1 Serisi", "3 Serisi", "5 Serisi", "7 Serisi"],
+                "Audi": ["A3", "A4", "A5", "A6"],
+                "Volkswagen": ["Golf", "Passat", "Polo", "Jetta"],
+                "Fiat": ["Egea", "Linea", "Punto"],
+                "Mercedes-Benz": ["C Serisi", "E Serisi", "A Serisi"]
+            },
+            "Minivan & Panelvan": {
+                "Fiat": ["Doblo", "Fiorino"],
+                "Ford": ["Transit", "Tourneo Connect"],
+                "Renault": ["Kangoo"]
             },
             "Motosiklet / Moped": {
                 "Skyjet": ["Twister", "Nitro"],
-                "Honda": ["Spacy", "PCX"]
+                "Honda": ["Spacy", "PCX", "Forza"],
+                "Yamaha": ["NMAX", "XMAX"]
             }
         };
 
@@ -367,30 +417,43 @@
             if(ekranAdi === 'form') document.getElementById('ilanVerFormGorunumu').classList.remove('hidden');
         };
 
-        // Ekran Kapanma Hatasını Çözen Mobil Uyumlu Google Giriş Metodu
-        const aksiyonFirebaseGoogleGiris = () => {
-            signInWithRedirect(auth, provider);
+        // Kimlik Doğrulama Fonksiyonları (Google Redirect + Hibrit Çözüm)
+        const aksiyonFirebaseGoogleGiris = () => { signInWithRedirect(auth, provider); };
+
+        document.getElementById('btnEpostaKayit').onclick = async () => {
+            const ep = document.getElementById('authEposta').value; const sif = document.getElementById('authSifre').value;
+            if(!ep || !sif) { alert("Lütfen alanları doldurun."); return; }
+            try {
+                const res = await createUserWithEmailAndPassword(auth, ep, sif);
+                oturumSetEt(res.user.email);
+            } catch(e) { alert("Kayıt Hatası: " + e.message); }
         };
 
-        // Redirect Dönüş Kontrolü
-        getRedirectResult(auth).then((result) => {
-            if (result && result.user) {
-                kullaniciGirisYapti = true;
-                aktifKullaniciEposta = result.user.email;
-                localStorage.setItem('mulkjet_giris_durum', 'true');
-                localStorage.setItem('mulkjet_aktif_user', result.user.email);
-                
-                let uyeler = JSON.parse(localStorage.getItem('mulkjet_uyeler')) || [];
-                if(!uyeler.find(u => u.email.toLowerCase() === result.user.email.toLowerCase())) {
-                    uyeler.push({ email: result.user.email.toLowerCase(), telefonlar: [] });
-                    localStorage.setItem('mulkjet_uyeler', JSON.stringify(uyeler));
-                }
-                arayuzOturumKontrol();
-                ilanlariYukleVeCek();
+        document.getElementById('btnEpostaGiris').onclick = async () => {
+            const ep = document.getElementById('authEposta').value; const sif = document.getElementById('authSifre').value;
+            if(!ep || !sif) { alert("Lütfen alanları doldurun."); return; }
+            try {
+                const res = await signInWithEmailAndPassword(auth, ep, sif);
+                oturumSetEt(res.user.email);
+            } catch(e) { alert("Giriş Hatası: " + e.message); }
+        };
+
+        const oturumSetEt = (email) => {
+            kullaniciGirisYapti = true; aktifKullaniciEposta = email;
+            localStorage.setItem('mulkjet_giris_durum', 'true');
+            localStorage.setItem('mulkjet_aktif_user', email);
+            let uyeler = JSON.parse(localStorage.getItem('mulkjet_uyeler')) || [];
+            if(!uyeler.find(u => u.email.toLowerCase() === email.toLowerCase())) {
+                uyeler.push({ email: email.toLowerCase(), telefonlar: [] });
+                localStorage.setItem('mulkjet_uyeler', JSON.stringify(uyeler));
             }
-        }).catch((error) => {
-            console.error("Giriş Yönlendirme Hatası: ", error);
-        });
+            arayuzOturumKontrol();
+            ilanlariYukleVeCek();
+        };
+
+        getRedirectResult(auth).then((result) => {
+            if (result && result.user) { oturumSetEt(result.user.email); }
+        }).catch(err => console.log("Redirect Auth Hatası:", err));
 
         const sanalCikisYap = async () => {
             await signOut(auth);
@@ -411,47 +474,69 @@
                         <button id="cikisBtn" class="text-xs text-gray-500 hover:text-red-600 px-2">Çıkış</button>
                     </div>
                 `;
-                document.getElementById('cikisBtn').addEventListener('click', sanalCikisYap);
-                document.getElementById('profilMenuBtn').addEventListener('click', () => { document.getElementById('profilModal').classList.remove('hidden'); profilArayuzunuDoldur(); });
-                
+                document.getElementById('cikisBtn').onclick = sanalCikisYap;
+                document.getElementById('profilMenuBtn').onclick = () => { document.getElementById('profilModal').classList.remove('hidden'); profilArayuzunuDoldur(); };
                 let uyeler = JSON.parse(localStorage.getItem('mulkjet_uyeler')) || [];
-                let aktifUyeObj = uyeler.find(u => u.email.toLowerCase() === aktifKullaniciEposta.toLowerCase());
-                formTelefonSecenekleriniDoldur(aktifUyeObj);
+                formTelefonSecenekleriniDoldur(uyeler.find(u => u.email.toLowerCase() === aktifKullaniciEposta.toLowerCase()));
             } else {
                 document.getElementById('formKilitliAlan').classList.remove('hidden');
                 document.getElementById('formAcikAlan').classList.add('hidden');
-                btnAlani.innerHTML = `<button id="navGirisBtn" class="border border-red-500 text-red-600 px-3 py-1.5 rounded-lg text-xs font-bold">Giriş Yap</button>`;
-                document.getElementById('navGirisBtn').addEventListener('click', aksiyonFirebaseGoogleGiris);
+                btnAlani.innerHTML = `<button id="navGirisBtn" class="border border-red-500 text-red-600 px-3 py-1.5 rounded-lg text-xs font-bold cursor-pointer">Giriş Yap</button>`;
+                document.getElementById('navGirisBtn').onclick = aksiyonFirebaseGoogleGiris;
             }
         };
 
-        // Dinamik Ağaç Yapısı ve Sayıcı Algoritması (Sahibinden Tarzı)
+        // Formda Ekspertiz Parçalarını Çizme
+        const formEkspertizSemasiniOlustur = () => {
+            const grid = document.getElementById('formEkspertizGrid');
+            grid.innerHTML = '';
+            standartArabaParcaları.forEach(p => {
+                formAktifEkspertizVerisi[p] = "Orijinal";
+                const d = document.createElement('div');
+                d.id = `part-form-${p.replace(/\s+/g, '-')}`;
+                d.className = "p-2 rounded border cursor-pointer part-orijinal transition";
+                d.innerText = `${p}: Orijinal`;
+                d.onclick = () => {
+                    if(formAktifEkspertizVerisi[p] === "Orijinal") {
+                        formAktifEkspertizVerisi[p] = "Boyalı";
+                        d.className = "p-2 rounded border cursor-pointer part-boyali transition";
+                    } else if(formAktifEkspertizVerisi[p] === "Boyalı") {
+                        formAktifEkspertizVerisi[p] = "Değişen";
+                        d.className = "p-2 rounded border cursor-pointer part-degisen transition";
+                    } else {
+                        formAktifEkspertizVerisi[p] = "Orijinal";
+                        d.className = "p-2 rounded border cursor-pointer part-orijinal transition";
+                    }
+                    d.innerText = `${p}: ${formAktifEkspertizVerisi[p]}`;
+                };
+                grid.appendChild(d);
+            });
+        };
+
+        // Dinamik Ağaç Yapısı ve Canlı Sayaçlar Algoritması
         const dinamikKategoriAgaciniUret = () => {
             const alan = document.getElementById('dinamikKategoriAgaci');
             alan.innerHTML = "";
-
-            const sayGetir = (kategoriIsmi, tip) => {
+            const say = (isim, tip) => {
                 return globalIlanlarDeposu.filter(i => {
                     if(tip === 'root') return true;
-                    if(tip === 'ana') return i.anaKategori === kategoriIsmi;
-                    if(tip === 'alt') return i.altKategori === kategoriIsmi;
-                    if(tip === 'marka') return i.marka === kategoriIsmi;
-                    if(tip === 'model') return i.model === kategoriIsmi;
+                    if(tip === 'ana') return i.anaKategori === isim;
+                    if(tip === 'alt') return i.altKategori === isim;
+                    if(tip === 'marka') return i.marka === isim;
+                    if(tip === 'model') return i.model === isim;
                     return false;
                 }).length;
             };
 
-            // Hepsi Kökü
-            let tumSayi = sayGetir('hepsi', 'root');
+            let tumSayi = say('hepsi', 'root');
             let kokBtn = document.createElement('button');
             kokBtn.className = `w-full text-left p-1 rounded font-bold ${seciliFiltreKategoriPath[0]==='hepsi'?'bg-red-600 text-white':''}`;
             kokBtn.innerHTML = `Tüm İlanlar <span class="opacity-70">(${tumSayi})</span>`;
             kokBtn.onclick = () => { seciliFiltreKategoriPath = ['hepsi']; filtreleriYonetVeUygula(); };
             alan.appendChild(kokBtn);
 
-            // Ana Kategoriler
             ["Emlak", "Vasıta"].forEach(ana => {
-                let anaSayi = sayGetir(ana, 'ana');
+                let anaSayi = say(ana, 'ana');
                 let divAna = document.createElement('div');
                 divAna.className = "pl-2 mt-2 font-bold text-gray-900 flex justify-between cursor-pointer";
                 divAna.innerHTML = `<span>${ana==='Emlak'?'🏠':'🚗'} ${ana}</span> <span>(${anaSayi})</span>`;
@@ -460,27 +545,25 @@
 
                 if(ana === "Vasıta") {
                     Object.keys(aracHiyerarsisi).forEach(alt => {
-                        let altSayi = sayGetir(alt, 'alt');
+                        let altSayi = say(alt, 'alt');
                         let divAlt = document.createElement('div');
                         divAlt.className = `pl-4 py-0.5 cursor-pointer flex justify-between ${seciliFiltreKategoriPath[1]===alt?'text-red-600 font-semibold':''}`;
                         divAlt.innerHTML = `<span>• ${alt}</span> <span>(${altSayi})</span>`;
                         divAlt.onclick = (e) => { e.stopPropagation(); seciliFiltreKategoriPath = [ana, alt]; filtreleriYonetVeUygula(); };
                         alan.appendChild(divAlt);
 
-                        // Markalar (Genişletilmiş Görünüm)
                         if(seciliFiltreKategoriPath[1] === alt && aracHiyerarsisi[alt]) {
                             Object.keys(aracHiyerarsisi[alt]).forEach(marka => {
-                                let markaSayi = sayGetir(marka, 'marka');
+                                let markaSayi = say(marka, 'marka');
                                 let divMarka = document.createElement('div');
                                 divMarka.className = `pl-6 py-0.5 text-[11px] cursor-pointer flex justify-between ${seciliFiltreKategoriPath[2]===marka?'text-orange-600 font-bold':''}`;
                                 divMarka.innerHTML = `<span>👉 ${marka}</span> <span>(${markaSayi})</span>`;
                                 divMarka.onclick = (e) => { e.stopPropagation(); seciliFiltreKategoriPath = [ana, alt, marka]; filtreleriYonetVeUygula(); };
                                 alan.appendChild(divMarka);
 
-                                // Modeller
                                 if(seciliFiltreKategoriPath[2] === marka) {
                                     aracHiyerarsisi[alt][marka].forEach(model => {
-                                        let modelSayi = sayGetir(model, 'model');
+                                        let modelSayi = say(model, 'model');
                                         let divModel = document.createElement('div');
                                         divModel.className = `pl-8 py-0.5 text-[10px] text-gray-500 cursor-pointer flex justify-between ${seciliFiltreKategoriPath[3]===model?'text-blue-600 font-bold':''}`;
                                         divModel.innerHTML = `<span>↳ ${model}</span> <span>(${modelSayi})</span>`;
@@ -491,9 +574,9 @@
                             });
                         }
                     });
-                } else if(ana === "Emlak") {
+                } else {
                     ["Satılık Konut", "Kiralık Daire"].forEach(alt => {
-                        let altSayi = sayGetir(alt, 'alt');
+                        let altSayi = say(alt, 'alt');
                         let divAlt = document.createElement('div');
                         divAlt.className = `pl-4 py-0.5 cursor-pointer flex justify-between ${seciliFiltreKategoriPath[1]===alt?'text-red-600 font-semibold':''}`;
                         divAlt.innerHTML = `<span>• ${alt}</span> <span>(${altSayi})</span>`;
@@ -504,28 +587,21 @@
             });
         };
 
-        const filtreleriYonetVeUygula = () => {
-            // Panel Görünürlük Ayarı
-            const path = seciliFiltreKategoriPath;
-            if(path[0] === 'Emlak') {
-                document.getElementById('ozelEmlakFiltreleri').classList.remove('hidden');
-                document.getElementById('ozelVasitaFiltreleri').classList.add('hidden');
-            } else if(path[0] === 'Vasıta') {
-                document.getElementById('ozelEmlakFiltreleri').classList.add('hidden');
+        const filtreleriYonetVeUygula = () => {{
+            if(seciliFiltreKategoriPath[0] === 'Vasıta') {
                 document.getElementById('ozelVasitaFiltreleri').classList.remove('hidden');
             } else {
-                document.getElementById('ozelEmlakFiltreleri').classList.add('hidden');
                 document.getElementById('ozelVasitaFiltreleri').classList.add('hidden');
             }
             dinamikKategoriAgaciniUret();
             ilanListesiniFiltreleVeYazdir();
         };
 
+        // Gelişmiş Filtreleme Motoru
         const ilanListesiniFiltreleVeYazdir = () => {
             const liste = document.getElementById('ilanListesi');
             let sonIlanlar = [...globalIlanlarDeposu];
 
-            // Kategori Path Filtrelemesi
             const path = seciliFiltreKategoriPath;
             if(path[0] !== 'hepsi') {
                 sonIlanlar = sonIlanlar.filter(i => i.anaKategori === path[0]);
@@ -534,34 +610,37 @@
                 if(path[3]) sonIlanlar = sonIlanlar.filter(i => i.model === path[3]);
             }
 
-            // Arama Metni Filtresi
             if(genelAramaMetni.trim() !== "") {
                 let s = genelAramaMetni.toLowerCase();
                 sonIlanlar = sonIlanlar.filter(i => i.baslik.toLowerCase().includes(s) || i.aciklama.toLowerCase().includes(s));
             }
 
-            // Adres Filtreleri
             const fIl = document.getElementById('filtreIl').value;
             const fIlce = document.getElementById('filtreIlce').value;
             const fMah = document.getElementById('filtreMahalle').value.trim().toLowerCase();
-
             if(fIl) sonIlanlar = sonIlanlar.filter(i => i.il === fIl);
             if(fIlce) sonIlanlar = sonIlanlar.filter(i => i.ilce === fIlce);
             if(fMah) sonIlanlar = sonIlanlar.filter(i => i.mahalle && i.mahalle.toLowerCase().includes(fMah));
 
-            // Fiyat Filtreleri
             const minF = document.getElementById('filtreMinFiyat').value;
             const maxF = document.getElementById('filtreMaxFiyat').value;
             if(minF) sonIlanlar = sonIlanlar.filter(i => Number(i.fiyat) >= Number(minF));
             if(maxF) sonIlanlar = sonIlanlar.filter(i => Number(i.fiyat) <= Number(maxF));
 
-            // Vites ve KM Filtresi (Vasıta İçin Kesin Uyuşma)
             if(path[0] === 'Vasıta') {
-                const fVites = document.getElementById('filtreVites').value;
-                const fMaxKm = document.getElementById('filtreMaxKm').value;
+                const minY = document.getElementById('filtreMinYil').value;
+                const maxY = document.getElementById('filtreMaxYil').value;
+                const minK = document.getElementById('filtreMinKm').value;
+                const maxK = document.getElementById('filtreMaxKm').value;
+                const fVit = document.getElementById('filtreVites').value;
+                const fHas = document.getElementById('filtreHasar').value;
 
-                if(fVites) sonIlanlar = sonIlanlar.filter(i => i.vites === fVites);
-                if(fMaxKm) sonIlanlar = sonIlanlar.filter(i => Number(i.km || 0) <= Number(fMaxKm));
+                if(minY) sonIlanlar = sonIlanlar.filter(i => Number(i.yil || 0) >= Number(minY));
+                if(maxY) sonIlanlar = sonIlanlar.filter(i => Number(i.yil || 0) <= Number(maxY));
+                if(minK) sonIlanlar = sonIlanlar.filter(i => Number(i.km || 0) >= Number(minK));
+                if(maxK) sonIlanlar = sonIlanlar.filter(i => Number(i.km || 0) <= Number(maxK));
+                if(fVit) sonIlanlar = sonIlanlar.filter(i => i.vites === fVit);
+                if(fHas) sonIlanlar = sonIlanlar.filter(i => i.hasarDurumu === fHas);
             }
 
             document.getElementById('ilanSayac').textContent = `${sonIlanlar.length} İlan`;
@@ -579,7 +658,7 @@
                         <p class="text-[10px] text-gray-400 mt-1">📍 ${ilan.il} / ${ilan.ilce}</p>
                         <div class="flex justify-between items-center mt-3 border-t pt-2">
                             <span class="text-sm font-black text-red-600">${Number(ilan.fiyat).toLocaleString('tr-TR')} TL</span>
-                            <span class="text-[9px] bg-gray-100 px-1.5 py-0.5 rounded text-gray-500">${ilan.vites || ilan.oda || ''}</span>
+                            <span class="text-[9px] bg-gray-100 px-1.5 py-0.5 rounded text-gray-500">${ilan.vites || ilan.oda || ''} (${ilan.yil || ''})</span>
                         </div>
                     </div>
                 `;
@@ -587,18 +666,32 @@
             });
         };
 
-        // Haritada Göster Özellikli Detay Sayfası
+        // WhatsApp ve Harita Entegrasyonlu Yeni Detay Sayfası
         const ilanDetaySayfasiAc = (ilanId) => {
             const ilan = globalIlanlarDeposu.find(i => i.id === ilanId);
             if(!ilan) return;
-
             ekranGoster('detay');
+
             const tamAdresMetni = `${ilan.il}, ${ilan.ilce}, ${ilan.mahalle} Mah., ${ilan.sokak || ''}`;
             const haritaUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(tamAdresMetni)}`;
+            const wpMetin = encodeURIComponent(`Mülkjet'te harika bir ilan buldum! \nBaşlık: ${ilan.baslik}\nFiyat: ${Number(ilan.fiyat).toLocaleString('tr-TR')} TL\nKonum: ${tamAdresMetni}\nDetaylar için siteyi ziyaret edin.`);
+            const wpUrl = `https://api.whatsapp.com/send?text=${wpMetin}`;
 
             let gorsellerHtml = '';
-            if(ilan.gorseller) {
-                ilan.gorseller.forEach(g => { gorsellerHtml += `<img src="${g}" class="w-full max-h-80 object-contain bg-gray-900 rounded-xl flex-shrink-0">`; });
+            if(ilan.gorseller) { ilan.gorseller.forEach(g => { gorsellerHtml += `<img src="${g}" class="w-full max-h-80 object-contain bg-gray-900 rounded-xl flex-shrink-0">`; }); }
+
+            let ekspertizHtml = '';
+            if(ilan.ekspertizVerisi) {
+                ekspertizHtml = `<div class="mt-4 border-t pt-4">
+                    <h4 class="text-xs font-bold text-gray-900 mb-2">🚗 İlan Ekspertiz Raporu</h4>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px] font-semibold text-center">`;
+                Object.keys(ilan.ekspertizVerisi).forEach(p => {
+                    let cls = "part-orijinal";
+                    if(ilan.ekspertizVerisi[p] === "Boyalı") cls = "part-boyali";
+                    if(ilan.ekspertizVerisi[p] === "Değişen") cls = "part-degisen";
+                    ekspertizHtml += `<div class="p-1.5 rounded ${cls}">${p}: ${ilan.ekspertizVerisi[p]}</div>`;
+                });
+                ekspertizHtml += `</div></div>`;
             }
 
             document.getElementById('ilanDetayIcerikAlani').innerHTML = `
@@ -606,27 +699,34 @@
                     <div class="lg:col-span-2 space-y-4">
                         <div class="flex overflow-x-auto gap-2 p-2 bg-black rounded-xl no-scrollbar">${gorsellerHtml}</div>
                         <div class="pt-2"><h3 class="font-bold text-sm border-b pb-1">📋 Açıklama</h3><p class="text-xs text-gray-600 mt-2">${ilan.aciklama}</p></div>
+                        ${ekspertizHtml}
                     </div>
                     <div class="space-y-4">
                         <h1 class="text-lg font-bold text-gray-900">${ilan.baslik}</h1>
                         <div class="text-2xl font-black text-red-600 border-b pb-2">${Number(ilan.fiyat).toLocaleString('tr-TR')} TL</div>
                         <div class="bg-gray-50 p-3 rounded-xl text-xs space-y-2">
                             <div><strong>Konum:</strong> ${tamAdresMetni}</div>
-                            ${ilan.vites ? `<div><strong>Vites:</strong> ${ilan.vites}</div>` : ''}
+                            ${ilan.yil ? `<div><strong>Model Yılı:</strong> ${ilan.yil}</div>` : ''}
                             ${ilan.km ? `<div><strong>KM:</strong> ${ilan.km}</div>` : ''}
+                            ${ilan.vites ? `<div><strong>Vites:</strong> ${ilan.vites}</div>` : ''}
+                            ${ilan.hasarDurumu ? `<div><strong>Hasar Durumu:</strong> ${ilan.hasarDurumu} (${Number(ilan.tramer || 0).toLocaleString('tr-TR')} TL)</div>` : ''}
                             ${ilan.marka ? `<div><strong>Marka/Model:</strong> ${ilan.marka} / ${ilan.model}</div>` : ''}
                         </div>
-                        <a href="${haritaUrl}" target="_blank" class="w-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-3 rounded-xl flex justify-center items-center gap-2 transition text-center">
+                        
+                        <a href="${wpUrl}" target="_blank" class="w-full bg-green-500 hover:bg-green-600 text-white text-xs font-bold py-3 rounded-xl flex justify-center items-center gap-2 transition text-center shadow-xs">
+                            💬 WhatsApp ile Paylaş
+                        </a>
+                        <a href="${haritaUrl}" target="_blank" class="w-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-3 rounded-xl flex justify-center items-center gap-2 transition text-center shadow-xs">
                             🗺️ Haritada Göster (Google Haritalar)
                         </a>
-                        <a href="tel:${ilan.tel}" class="w-full bg-green-600 text-white text-xs font-bold py-3 rounded-xl block text-center">📞 Ara: ${ilan.tel}</a>
+                        <a href="tel:${ilan.tel}" class="w-full bg-gray-900 text-white text-xs font-bold py-3 rounded-xl block text-center shadow-xs">📞 Arayın: ${ilan.tel}</a>
                     </div>
                 </div>
             `;
         };
 
-        // Form Kategori Değişim Dinamik Yönetimi
-        const formKategoriDinamikYonetim = () => {
+        // Form Kategori ve Alt Görünüm Kontrolleri
+        const formKategoriYonetim = () => {
             const ana = document.getElementById('formAnaKategori').value;
             const alt = document.getElementById('formAltKategori');
             const mmAlan = document.getElementById('formMarkaModelSecimAlani');
@@ -634,15 +734,20 @@
             alt.innerHTML = '';
             if(ana === 'Emlak') {
                 document.getElementById('formEmlakAlanlari').classList.remove('hidden');
-                document.getElementById('formVasitaAlanlari').classList.add('hidden');
+                document.getElementById('formVasitaEkstraAlanlari').classList.add('hidden');
+                document.getElementById('formVasitaHasarAlani').classList.add('hidden');
+                document.getElementById('formEkspertizSemasiAlani').classList.add('hidden');
                 mmAlan.classList.add('hidden');
                 ["Satılık Konut", "Kiralık Daire"].forEach(e => alt.innerHTML += `<option value="${e}">${e}</option>`);
             } else {
                 document.getElementById('formEmlakAlanlari').classList.add('hidden');
-                document.getElementById('formVasitaAlanlari').classList.remove('hidden');
+                document.getElementById('formVasitaEkstraAlanlari').classList.remove('hidden');
+                document.getElementById('formVasitaHasarAlani').classList.remove('hidden');
+                document.getElementById('formEkspertizSemasiAlani').classList.remove('hidden');
                 mmAlan.classList.remove('hidden');
                 Object.keys(aracHiyerarsisi).forEach(v => alt.innerHTML += `<option value="${v}">${v}</option>`);
                 formMarkaModelYukle();
+                formEkspertizSemasiniOlustur();
             }
         };
 
@@ -659,11 +764,11 @@
             }
         };
 
-        // İlan Kaydetme
+        // Yeni Gelişmiş İlanı Gönderme Veritabanı Süreci
         document.getElementById('emlakForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const tel = document.getElementById('ilanTelefonSecimi').value;
-            if(!tel) { alert("Lütfen profilinizden en az 1 telefon ekleyin."); return; }
+            if(!tel) { alert("Lütfen profilinize giderek en az 1 telefon numarası ekleyin."); return; }
 
             let marka = "", model = "";
             if(document.getElementById('formAnaKategori').value === 'Vasıta') {
@@ -683,8 +788,12 @@
                     aciklama: document.getElementById('ilanAciklama').value,
                     fiyat: document.getElementById('ilanFiyat').value,
                     oda: document.getElementById('ilanOda').value,
-                    vites: document.getElementById('ilanVites').value,
-                    km: document.getElementById('ilanKm').value,
+                    yil: document.getElementById('ilanYil').value || "",
+                    km: document.getElementById('ilanKm').value || "",
+                    vites: document.getElementById('ilanVites').value || "",
+                    hasarDurumu: document.getElementById('ilanHasarDurumu').value || "",
+                    tramer: document.getElementById('ilanTramerTutar').value || "0",
+                    ekspertizVerisi: document.getElementById('formAnaKategori').value === 'Vasıta' ? formAktifEkspertizVerisi : null,
                     il: document.getElementById('ilanIl').value,
                     ilce: document.getElementById('ilanIlce').value,
                     mahalle: document.getElementById('ilanMahalle').value,
@@ -692,13 +801,13 @@
                     tel: tel, gorseller: yuklenenGorseller,
                     tarih: new Date().toISOString()
                 });
-                alert("İlanınız jet hızıyla eklendi!");
+                alert("Mülkjet İlanınız Kusursuz Şekilde Yayınlandı!");
                 document.getElementById('emlakForm').reset();
                 ekranGoster('ana');
                 ilanlariYukleVeCek();
             };
 
-            if(dosyaElementi.files.length === 0) { await veriKaydet(); } else {
+            if(!dosyaElementi.files || dosyaElementi.files.length === 0) { await veriKaydet(); } else {
                 let count = 0;
                 for(let i=0; i<dosyaElementi.files.length; i++) {
                     const r = new FileReader();
@@ -716,19 +825,17 @@
             filtreleriYonetVeUygula();
         };
 
-        // Profil Telefon Yönetimi (3 Sınırı)
+        // Telefon Ekleme/Çıkarma Profil Senaryoları
         const profilArayuzunuDoldur = () => {
             let uyeler = JSON.parse(localStorage.getItem('mulkjet_uyeler')) || [];
             let u = uyeler.find(user => user.email.toLowerCase() === aktifKullaniciEposta.toLowerCase());
             if(!u) return;
-            const liste = document.getElementById('profilTelefonListesi');
-            liste.innerHTML = '';
+            const liste = document.getElementById('profilTelefonListesi'); liste.innerHTML = '';
             if(!u.telefonlar) u.telefonlar = [];
             u.telefonlar.forEach((t, idx) => {
                 liste.innerHTML += `<div class="flex justify-between bg-gray-50 p-1 text-xs rounded"><span>${t}</span><button class="text-red-500 font-bold" onclick="window.telSil(${idx})">×</button></div>`;
             });
             document.getElementById('telefonEklemeFormAlani').classList.toggle('hidden', u.telefonlar.length >= 3);
-            document.getElementById('telLimitUyari').classList.toggle('hidden', u.telefonlar.length < 3);
         };
 
         window.telSil = (idx) => {
@@ -740,13 +847,11 @@
         };
 
         document.getElementById('profilTelefonEkleBtn').onclick = () => {
-            const val = document.getElementById('yeniProfilTel').value.trim();
-            if(!val) return;
+            const val = document.getElementById('yeniProfilTel').value.trim(); if(!val) return;
             let uyeler = JSON.parse(localStorage.getItem('mulkjet_uyeler')) || [];
             let u = uyeler.find(user => user.email.toLowerCase() === aktifKullaniciEposta.toLowerCase());
             if(u && u.telefonlar.length < 3) {
-                u.telefonlar.push(val);
-                localStorage.setItem('mulkjet_uyeler', JSON.stringify(uyeler));
+                u.telefonlar.push(val); localStorage.setItem('mulkjet_uyeler', JSON.stringify(uyeler));
                 document.getElementById('yeniProfilTel').value = '';
                 profilArayuzunuDoldur(); arayuzOturumKontrol();
             }
@@ -759,18 +864,17 @@
             } else { s.innerHTML = '<option value="">Önce profilden tel ekleyin</option>'; }
         };
 
-        // Event Dinleyiciler
+        // Event Eşleşmeleri
         document.getElementById('logoBtn').onclick = () => { seciliFiltreKategoriPath=['hepsi']; filtreleriYonetVeUygula(); ekranGoster('ana'); };
         document.getElementById('detaydanGeriDonBtn').onclick = () => ekranGoster('ana');
         document.getElementById('yeniIlanEkleLink').onclick = () => ekranGoster('form');
         document.getElementById('kilitliAlanGirisBtn').onclick = aksiyonFirebaseGoogleGiris;
-        document.getElementById('formAnaKategori').onchange = formKategoriDinamikYonetim;
+        document.getElementById('formAnaKategori').onchange = formKategoriYonetim;
         document.getElementById('formAltKategori').onchange = formMarkaModelYukle;
         document.getElementById('filtreleriUygulaBtn').onclick = ilanListesiniFiltreleVeYazdir;
         document.getElementById('profilModalKapatBtn').onclick = () => document.getElementById('profilModal').classList.add('hidden');
         document.getElementById('hizliAraBtn').onclick = () => { genelAramaMetni = document.getElementById('hizliAraInput').value; ilanListesiniFiltreleVeYazdir(); };
 
-        // Şehir Seçimlerini Doldurma
         const illerYukle = () => {
             const iIl = document.getElementById('ilanIl'); const fIl = document.getElementById('filtreIl');
             iIl.innerHTML = '<option value="">Seçiniz</option>'; fIl.innerHTML = '<option value="">Tüm İller</option>';
@@ -789,10 +893,10 @@
             if(sehirVeritabi[e.target.value]) sehirVeritabi[e.target.value].forEach(i => ilce.innerHTML += `<option value="${i}">${i}</option>`);
         };
 
-        // Başlangıç
+        // Başlangıç Tetikleyicisi
         auth.onAuthStateChanged(user => {
             if(user) { kullaniciGirisYapti = true; aktifKullaniciEposta = user.email; }
-            illerYukle(); formKategoriDinamikYonetim(); arayuzOturumKontrol(); ilanlariYukleVeCek();
+            illerYukle(); formKategoriYonetim(); arayuzOturumKontrol(); ilanlariYukleVeCek();
         });
     </script>
 </body>
