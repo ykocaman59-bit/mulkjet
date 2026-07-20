@@ -27,7 +27,7 @@
                 
                 <!-- Dinamik Giriş/Çıkış Buton Alanı -->
                 <div id="authButonAlani">
-                    <button type="button" onclick="modalAc('girisModal')" class="flex items-center gap-2 border border-gray-300 hover:bg-gray-50 text-gray-700 px-3 py-1.5 rounded-lg text-sm font-medium transition shadow-sm cursor-pointer">
+                    <button type="button" onclick="aksiyonFirebaseGoogleGiris()" class="flex items-center gap-2 border border-red-500 hover:bg-red-50 text-red-600 px-3 py-1.5 rounded-xl text-sm font-bold transition shadow-sm cursor-pointer">
                         <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-4 h-4" alt="Google">
                         <span>Google ile Giriş Yap</span>
                     </button>
@@ -63,9 +63,9 @@
                 <div class="text-5xl mb-4 text-gray-400">🔒</div>
                 <h2 class="text-lg font-bold text-gray-900 mb-2">İlan Vermek İçin Giriş Yapın</h2>
                 <p class="text-xs text-gray-500 mb-6">Mülkjet güvenliği ve yanıltıcı ilanları önlemek amacıyla yalnızca kayıtlı üyeler ilan verebilir. Ziyaretçiler sadece ilanları inceleyebilir.</p>
-                <button type="button" onclick="modalAc('girisModal')" class="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2.5 rounded-lg transition shadow-sm flex justify-center items-center gap-2 cursor-pointer text-sm">
+                <button type="button" onclick="aksiyonFirebaseGoogleGiris()" class="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2.5 rounded-xl transition shadow-sm flex justify-center items-center gap-2 cursor-pointer text-sm">
                     <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-4 h-4 bg-white rounded-full p-0.5 shadow-xs" alt="Google">
-                    Giriş Yap ve İlan Ver
+                    Google ile Hızlı Giriş Yap
                 </button>
             </div>
 
@@ -152,52 +152,6 @@
 
     </main>
 
-    <!-- GİRİŞ MODALI PENCERESİ -->
-    <div id="girisModal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center hidden p-4">
-        <div class="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl relative">
-            <button type="button" onclick="modalKapat('girisModal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-xl font-bold cursor-pointer">&times;</button>
-            <h3 class="text-xl font-bold text-gray-900 mb-1">Mülkjet'e Giriş Yap</h3>
-            <p class="text-xs text-gray-500 mb-4">Hesabınızla giriş yaparak sistem özelliklerini açın.</p>
-            <form onsubmit="aksiyonGiris(event)" class="space-y-3">
-                <div>
-                    <label class="block text-xs font-medium mb-1 text-gray-700">Gmail / E-posta Adresi</label>
-                    <input type="email" id="girisEmail" required placeholder="ornek@gmail.com" class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-red-500">
-                </div>
-                <div>
-                    <label class="block text-xs font-medium mb-1 text-gray-700">Şifre</label>
-                    <input type="password" id="girisSifre" required placeholder="••••••••" class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-red-500">
-                </div>
-                <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2 rounded-lg text-sm transition cursor-pointer shadow-sm">Giriş Yap</button>
-                <div class="text-center mt-2">
-                    <p class="text-xs text-gray-500">Henüz hesabınız yok mu? <button type="button" onclick="modalKapat('girisModal'); modalAc('kayitModal');" class="text-red-600 underline font-semibold cursor-pointer">Kayıt Ol</button></p>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- KAYIT MODALI PENCERESİ -->
-    <div id="kayitModal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center hidden p-4">
-        <div class="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl relative">
-            <button type="button" onclick="modalKapat('kayitModal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-xl font-bold cursor-pointer">&times;</button>
-            <h3 class="text-xl font-bold text-gray-900 mb-1">Mülkjet'e Kayıt Ol</h3>
-            <p class="text-xs text-gray-500 mb-4">Yeni hesap açarak profilinizi oluşturun.</p>
-            <form onsubmit="aksiyonKayit(event)" class="space-y-3">
-                <div>
-                    <label class="block text-xs font-medium mb-1 text-gray-700">Gmail / E-posta Adresi</label>
-                    <input type="email" id="kayitEmail" required placeholder="ornek@gmail.com" class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-red-500">
-                </div>
-                <div>
-                    <label class="block text-xs font-medium mb-1 text-gray-700">Şifre</label>
-                    <input type="password" id="kayitSifre" required placeholder="Şifrenizi belirleyin" class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-red-500">
-                </div>
-                <button type="submit" class="w-full bg-gray-900 hover:bg-gray-800 text-white font-medium py-2 rounded-lg text-sm transition cursor-pointer shadow-sm">Kayıt İşlemini Tamamla</button>
-                <div class="text-center mt-2">
-                    <p class="text-xs text-gray-500">Zaten üye misiniz? <button type="button" onclick="modalKapat('kayitModal'); modalAc('girisModal');" class="text-red-600 underline font-semibold cursor-pointer">Giriş Yap</button></p>
-                </div>
-            </form>
-        </div>
-    </div>
-
     <!-- PROFİL AYARLARI MODALI -->
     <div id="profilModal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center hidden p-4">
         <div class="bg-white rounded-2xl p-6 max-w-md w-full shadow-xl relative max-h-[90vh] overflow-y-auto">
@@ -265,21 +219,94 @@
 
     <footer class="bg-gray-900 text-gray-400 py-8 text-center mt-20 border-t border-gray-800">
         <p class="text-sm">© 2026 Mülkjet Platformu. Tüm hakları saklıdır.</p>
-        <p class="text-xs text-red-400 mt-2">İş Ortaklığı Modeli: Bu platform üzerinden yapılan gayrimenkul işlemlerinde %2 hizmet komisyonu uygulanır.</p>
+        <p class="text-xs text-red-400 mt-2">İş Ortaklığı Modeli: Bu platform üzerinden yapılan gayrimenekul işlemlerinde %2 hizmet komisyonu uygulanır.</p>
     </footer>
 
+    <!-- FIREBASE KÜTÜPHANELERİ (Modül Olarak Eklendi) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        // BURAYI KENDİ FIREBASE PROJE AYARLARINLA DEĞİŞTİRMELİSİN
+        const firebaseConfig = {
+            apiKey: "BURAYA_KENDI_API_KEYINIZI_YAZIN",
+            authDomain: "BURAYA_PROJE_ADINIZ.firebaseapp.com",
+            projectId: "BURAYA_PROJE_ADINIZ",
+            storageBucket: "BURAYA_PROJE_ADINIZ.appspot.com",
+            messagingSenderId: "BURAYA_ID_YAZIN",
+            appId: "BURAYA_APP_ID_YAZIN"
+        };
+
+        // Firebase Başlatma
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
+
+        // Cihazdaki Gmail Hesaplarını Listelemeyi Sağlayan Tetikleyici Fonksiyon
+        window.aksiyonFirebaseGoogleGiris = async () => {
+            try {
+                // Bu metot cihazdaki kayıtlı mailleri pencere olarak listeler
+                const result = await signInWithPopup(auth, provider);
+                const user = result.user;
+
+                // Giriş başarılıysa bilgileri yerel veritabanıyla eşleştir
+                window.kullaniciGirisYapti = true;
+                window.aktifKullaniciEposta = user.email;
+                
+                localStorage.setItem('mulkjet_giris_durum', 'true');
+                localStorage.setItem('mulkjet_aktif_user', user.email);
+
+                // Eğer kullanıcı veritabanımızda yoksa yeni bir kayıt nesnesi oluştur
+                let veriTabaniUyeleri = JSON.parse(localStorage.getItem('mulkjet_uyeler')) || [];
+                const kullanıcıVarMi = veriTabaniUyeleri.find(u => u.email.toLowerCase() === user.email.toLowerCase());
+                
+                if (!kullanıcıVarMi) {
+                    veriTabaniUyeleri.push({ 
+                        email: user.email, 
+                        foto: user.photoURL || "", 
+                        telefonlar: [] 
+                    });
+                    localStorage.setItem('mulkjet_uyeler', JSON.stringify(veriTabaniUyeleri));
+                }
+
+                window.arayuzOturumKontrol();
+                alert(`Google ile Giriş Başarılı! Hoş geldiniz.`);
+                window.ilanlariRenderEt();
+            } catch (error) {
+                console.error("Giriş sırasında bir hata oluştu: ", error);
+                alert("Giriş işlemi iptal edildi veya bir hata oluştu.");
+            }
+        };
+
+        // Çıkış fonksiyonunu Firebase uyumlu hale getirme
+        window.sanalCikisYap = async () => {
+            await signOut(auth);
+            window.kullaniciGirisYapti = false;
+            window.aktifKullaniciEposta = "";
+            window.aktifFiltre = "hepsi";
+            
+            localStorage.setItem('mulkjet_giris_durum', 'false');
+            localStorage.removeItem('mulkjet_aktif_user');
+            
+            window.arayuzOturumKontrol();
+            alert("Oturum kapatıldı.");
+            window.ilanlariRenderEt();
+        };
+    </script>
+
+    <!-- GENEL UYGULAMA MANTIĞI SCRIPTİ -->
     <script>
-        // LocalStorage Kalıcı Bağlantıları
-        let kullaniciGirisYapti = localStorage.getItem('mulkjet_giris_durum') === 'true';
-        let aktifKullaniciEposta = localStorage.getItem('mulkjet_aktif_user') || "";
-        let aktifFiltre = "hepsi"; 
+        // Global Durum Değişkenleri
+        window.kullaniciGirisYapti = localStorage.getItem('mulkjet_giris_durum') === 'true';
+        window.aktifKullaniciEposta = localStorage.getItem('mulkjet_aktif_user') || "";
+        window.aktifFiltre = "hepsi"; 
         
         let ilanlar = JSON.parse(localStorage.getItem('mulkjet_ilanlar')) || [];
 
         const sehirVeritabi = {
             "İstanbul": [
                 "Sultanbeyli", "Kadıköy", "Ümraniye", "Pendik", "Kartal", "Maltepe", "Ataşehir", "Sancaktepe", "Üsküdar", "Beykoz", "Tuzla", "Çekmeköy", "Şile", "Adalar",
-                "Esenyurt", "Küçükçekmece", "Bağcılar", "Avcılar", "Bahçelievler", "Sultangazi", "Başakşehir", "Gazanferpaşa", "Kağıthane", "Esenler", "Gaziosmanpaşa", "Beylikdüzü", "Sarıyer", "Fatih", "Güngören", "Arnavutköy", "Şişli", "Zeytinburnu", "Beşiktaş", "Bakırköy", "Beyoğlu", "Silivri", "Çatalca", "Büyükçekmece"
+                "Esenyurt", "Küçükçekmece", "Bağcılar", "Avcılar", "Bahçelievler", "Sultangazi", "Başakşehir", "Kağıthane", "Esenler", "Gaziosmanpaşa", "Beylikdüzü", "Sarıyer", "Fatih", "Güngören", "Arnavutköy", "Şişli", "Zeytinburnu", "Beşiktaş", "Bakırköy", "Beyoğlu", "Silivri", "Çatalca", "Büyükçekmece"
             ],
             "Ankara": ["Çankaya", "Keçiören", "Yenimahalle", "Mamak", "Etimesgut", "Sincan", "Altındağ", "Gölbaşı", "Pursaklar"],
             "İzmir": ["Konak", "Karşıyaka", "Bornova", "Buca", "Çiğli", "Gaziemir", "Karabağlar", "Bayraklı", "Çeşme", "Urla", "Aliağa", "Menemen", "Torbalı"],
@@ -294,81 +321,30 @@
         function modalAc(id) { document.getElementById(id).classList.remove('hidden'); }
         function modalKapat(id) { document.getElementById(id).classList.add('hidden'); }
 
-        // Kayıt Sistemi
-        function aksiyonKayit(e) {
-            e.preventDefault();
-            const email = document.getElementById('kayitEmail').value.trim();
-            const sifre = document.getElementById('kayitSifre').value;
-
-            let veriTabaniUyeleri = JSON.parse(localStorage.getItem('mulkjet_uyeler')) || [];
-            const epostaVarMi = veriTabaniUyeleri.find(user => user.email.toLowerCase() === email.toLowerCase());
-
-            if (epostaVarMi) {
-                alert("Bu Gmail adresi sistemde zaten kayıtlı! Lütfen Giriş Yap menüsünü kullanın.");
-                return;
-            }
-
-            veriTabaniUyeleri.push({ email: email, sifre: sifre, foto: "", telefonlar: [] });
-            localStorage.setItem('mulkjet_uyeler', JSON.stringify(veriTabaniUyeleri));
-            alert("Harika! Üyelik başarıyla oluşturuldu. Şimdi giriş yapabilirsiniz.");
-            modalKapat('kayitModal');
-            modalAc('girisModal');
-        }
-
-        // Giriş Sistemi
-        function aksiyonGiris(e) {
-            e.preventDefault();
-            const email = document.getElementById('girisEmail').value.trim();
-            const sifre = document.getElementById('girisSifre').value;
-
-            let veriTabaniUyeleri = JSON.parse(localStorage.getItem('mulkjet_uyeler')) || [];
-            const eslesenKullanici = veriTabaniUyeleri.find(user => user.email.toLowerCase() === email.toLowerCase());
-
-            if (!eslesenKullanici) {
-                alert("Bu Gmail adresi henüz kayıt edilmedi! Lütfen önce Kayıt Ol bağlantısından profil oluşturun.");
-                return;
-            }
-
-            if (eslesenKullanici.sifre !== sifre) {
-                alert("Hatalı şifre girdiniz! Lütfen kontrol edip tekrar deneyin.");
-                return;
-            }
-
-            kullaniciGirisYapti = true;
-            aktifKullaniciEposta = eslesenKullanici.email;
-            
-            localStorage.setItem('mulkjet_giris_durum', 'true');
-            localStorage.setItem('mulkjet_aktif_user', aktifKullaniciEposta);
-            
-            modalKapat('girisModal');
-            arayuzOturumKontrol();
-            alert(`Oturum başarıyla doğrulandı.`);
-            ilanlariRenderEt();
-        }
-
-        function arayuzOturumKontrol() {
+        window.arayuzOturumKontrol = function() {
             const ilanlarimBtn = document.getElementById('ilanlarımMenuBtn');
             const profilimBtn = document.getElementById('profilimMenuBtn');
             
-            if (kullaniciGirisYapti && aktifKullaniciEposta) {
+            if (window.kullaniciGirisYapti && window.aktifKullaniciEposta) {
                 document.getElementById('formKilitliAlan').classList.add('hidden');
                 document.getElementById('formAcikAlan').classList.remove('hidden');
                 ilanlarimBtn.classList.remove('hidden', 'invisible');
                 profilimBtn.classList.remove('hidden', 'invisible');
 
                 let uyeler = JSON.parse(localStorage.getItem('mulkjet_uyeler')) || [];
-                let aktifUyeObj = uyeler.find(u => u.email.toLowerCase() === aktifKullaniciEposta.toLowerCase());
+                let aktifUyeObj = uyeler.find(u => u.email.toLowerCase() === window.aktifKullaniciEposta.toLowerCase());
                 
-                let avatarHtml = aktifKullaniciEposta.charAt(0).toUpperCase();
+                let avatarHtml = window.aktifKullaniciEposta.charAt(0).toUpperCase();
                 if(aktifUyeObj && aktifUyeObj.foto) {
                     avatarHtml = `<img src="${aktifUyeObj.foto}" class="w-full h-full object-cover">`;
                 }
 
+                // K HARFİ/YAZISI YERİNE BURAYA TAM İSTEDİĞİNİZ MÜLKJET YAZISINI VE AVATARI KOYDUK
                 document.getElementById('authButonAlani').innerHTML = `
-                    <div class="flex items-center gap-2">
-                        <div class="w-8 h-8 rounded-full bg-red-600 text-white flex items-center justify-center font-bold text-sm shadow overflow-hidden">${avatarHtml}</div>
-                        <span class="text-xs font-semibold text-gray-700 hidden sm:inline max-w-[100px] truncate">${aktifKullaniciEposta}</span>
-                        <button type="button" onclick="sanalCikisYap()" class="text-[11px] text-red-600 underline ml-1 cursor-pointer">Çıkış</button>
+                    <div class="flex items-center gap-3 bg-gray-50 px-3 py-1 rounded-full border border-gray-100">
+                        <span class="text-xs font-black text-red-600 tracking-tight">🚀 MÜLK<span class="text-gray-900">JET</span></span>
+                        <div class="w-7 h-7 rounded-full bg-red-600 text-white flex items-center justify-center font-bold text-xs shadow overflow-hidden">${avatarHtml}</div>
+                        <button type="button" onclick="sanalCikisYap()" class="text-[11px] text-gray-500 hover:text-red-600 font-semibold ml-1 cursor-pointer">Çıkış</button>
                     </div>
                 `;
                 formTelefonSeçenekleriniDoldur(aktifUyeObj);
@@ -379,7 +355,7 @@
                 profilimBtn.classList.add('hidden', 'invisible');
 
                 document.getElementById('authButonAlani').innerHTML = `
-                    <button type="button" onclick="modalAc('girisModal')" class="flex items-center gap-2 border border-gray-300 hover:bg-gray-50 text-gray-700 px-3 py-1.5 rounded-lg text-sm font-medium transition shadow-sm cursor-pointer">
+                    <button type="button" onclick="aksiyonFirebaseGoogleGiris()" class="flex items-center gap-2 border border-red-500 hover:bg-red-50 text-red-600 px-3 py-1.5 rounded-xl text-sm font-bold transition shadow-sm cursor-pointer">
                         <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-4 h-4" alt="Google">
                         <span>Google ile Giriş Yap</span>
                     </button>
@@ -387,30 +363,17 @@
             }
         }
 
-        function sanalCikisYap() {
-            kullaniciGirisYapti = false;
-            aktifKullaniciEposta = "";
-            aktifFiltre = "hepsi";
-            
-            localStorage.setItem('mulkjet_giris_durum', 'false');
-            localStorage.removeItem('mulkjet_aktif_user');
-            
-            arayuzOturumKontrol();
-            alert("Oturum kapatıldı.");
-            ilanlariRenderEt();
-        }
-
         // Profil Yönetimi Fonksiyonları
         function profilArayuzunuDoldur() {
             let uyeler = JSON.parse(localStorage.getItem('mulkjet_uyeler')) || [];
-            let u = uyeler.find(user => user.email.toLowerCase() === aktifKullaniciEposta.toLowerCase());
+            let u = uyeler.find(user => user.email.toLowerCase() === window.aktifKullaniciEposta.toLowerCase());
             if(!u) return;
 
             const avatarAlani = document.getElementById('profilAvatarAlani');
             if(u.foto) {
                 avatarAlani.innerHTML = `<img src="${u.foto}" class="w-full h-full object-cover">`;
             } else {
-                avatarAlani.innerHTML = aktifKullaniciEposta.charAt(0).toUpperCase();
+                avatarAlani.innerHTML = window.aktifKullaniciEposta.charAt(0).toUpperCase();
             }
 
             const telListesi = document.getElementById('profilTelefonListesi');
@@ -436,12 +399,12 @@
             const reader = new FileReader();
             reader.onloadend = function() {
                 let uyeler = JSON.parse(localStorage.getItem('mulkjet_uyeler')) || [];
-                let idx = uyeler.findIndex(user => user.email.toLowerCase() === aktifKullaniciEposta.toLowerCase());
+                let idx = uyeler.findIndex(user => user.email.toLowerCase() === window.aktifKullaniciEposta.toLowerCase());
                 if(idx !== -1) {
                     uyeler[idx].foto = reader.result;
                     localStorage.setItem('mulkjet_uyeler', JSON.stringify(uyeler));
                     profilArayuzunuDoldur();
-                    arayuzOturumKontrol();
+                    window.arayuzOturumKontrol();
                 }
             }
             reader.readAsDataURL(file);
@@ -453,25 +416,25 @@
             if(!tel) return;
 
             let uyeler = JSON.parse(localStorage.getItem('mulkjet_uyeler')) || [];
-            let idx = uyeler.findIndex(user => user.email.toLowerCase() === aktifKullaniciEposta.toLowerCase());
+            let idx = uyeler.findIndex(user => user.email.toLowerCase() === window.aktifKullaniciEposta.toLowerCase());
             if(idx !== -1) {
                 if(!uyeler[idx].telefonlar) uyeler[idx].telefonlar = [];
                 uyeler[idx].telefonlar.push(tel);
                 localStorage.setItem('mulkjet_uyeler', JSON.stringify(uyeler));
                 telInput.value = '';
                 profilArayuzunuDoldur();
-                arayuzOturumKontrol();
+                window.arayuzOturumKontrol();
             }
         }
 
         function profilTelefonSil(index) {
             let uyeler = JSON.parse(localStorage.getItem('mulkjet_uyeler')) || [];
-            let idx = uyeler.findIndex(user => user.email.toLowerCase() === aktifKullaniciEposta.toLowerCase());
+            let idx = uyeler.findIndex(user => user.email.toLowerCase() === window.aktifKullaniciEposta.toLowerCase());
             if(idx !== -1) {
                 uyeler[idx].telefonlar.splice(index, 1);
                 localStorage.setItem('mulkjet_uyeler', JSON.stringify(uyeler));
                 profilArayuzunuDoldur();
-                arayuzOturumKontrol();
+                window.arayuzOturumKontrol();
             }
         }
 
@@ -488,19 +451,16 @@
             }
         }
 
-        // Anketli Profil Silme Süreci
         function aksiyonProfilKalıcıSil(e) {
             e.preventDefault();
             const neden = document.querySelector('input[name="silmeNedeni"]:checked').value;
             const detay = document.getElementById('silmeNedeniMetin').value;
 
-            // 1. Üyeyi sil
             let uyeler = JSON.parse(localStorage.getItem('mulkjet_uyeler')) || [];
-            uyeler = uyeler.filter(user => user.email.toLowerCase() !== aktifKullaniciEposta.toLowerCase());
+            uyeler = uyeler.filter(user => user.email.toLowerCase() !== window.aktifKullaniciEposta.toLowerCase());
             localStorage.setItem('mulkjet_uyeler', JSON.stringify(uyeler));
 
-            // 2. Üyeye ait ilanları kaldır
-            ilanlar = ilanlar.filter(ilan => ilan.sahip.toLowerCase() !== aktifKullaniciEposta.toLowerCase());
+            ilanlar = ilanlar.filter(ilan => ilan.sahip.toLowerCase() !== window.aktifKullaniciEposta.toLowerCase());
             localStorage.setItem('mulkjet_ilanlar', JSON.stringify(ilanlar));
 
             modalKapat('profilSilModal');
@@ -510,8 +470,8 @@
         }
 
         function filtreleIlanlar(tur) {
-            aktifFiltre = tur;
-            ilanlariRenderEt();
+            window.aktifFiltre = tur;
+            window.ilanlariRenderEt();
         }
 
         function illeriDoldur() {
@@ -539,14 +499,14 @@
         const ilanSayac = document.getElementById('ilanSayac');
         const ilanListesiBaslik = document.getElementById('ilanListesiBaslik');
 
-        function ilanlariRenderEt() {
+        window.ilanlariRenderEt = function() {
             if(!ilanListesi) return;
             ilanListesi.innerHTML = '';
 
             let gosterilecekIlanlar = ilanlar;
-            if (aktifFiltre === "benim") {
+            if (window.aktifFiltre === "benim") {
                 ilanListesiBaslik.textContent = "📂 Benim İlanlarım";
-                gosterilecekIlanlar = ilanlar.filter(ilan => ilan.sahip.toLowerCase() === aktifKullaniciEposta.toLowerCase());
+                gosterilecekIlanlar = ilanlar.filter(ilan => ilan.sahip.toLowerCase() === window.aktifKullaniciEposta.toLowerCase());
             } else {
                 ilanListesiBaslik.textContent = "🏠 Güncel İlanlar";
             }
@@ -573,7 +533,7 @@
                 const siteTamLinki = window.location.href;
                 const wpSablonu = `Merhaba, Mülkjet platformu üzerinden verdiğiniz ilan için ulaşıyorum.%0A%0A🏠 *İlan:* ${encodeURIComponent(ilan.baslik)}%0A💰 *Fiyat:* ${ilan.fiyat} TL%0A📍 *Konum:* ${encodeURIComponent(ilan.konum)}%0A🔗 *İlan Detay Linki:* ${encodeURIComponent(siteTamLinki)}`;
 
-                const ilanSahibiMi = kullaniciGirisYapti && (ilan.sahip.toLowerCase() === aktifKullaniciEposta.toLowerCase());
+                const ilanSahibiMi = window.kullaniciGirisYapti && (ilan.sahip.toLowerCase() === window.aktifKullaniciEposta.toLowerCase());
 
                 const kart = document.createElement('div');
                 kart.className = 'bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition flex flex-col';
@@ -625,17 +585,17 @@
             if (confirm("Bu ilanı kaldırmak istediğinize emin misiniz?")) {
                 ilanlar = ilanlar.filter(ilan => ilan.id !== id);
                 localStorage.setItem('mulkjet_ilanlar', JSON.stringify(ilanlar));
-                ilanlariRenderEt();
+                window.ilanlariRenderEt();
             }
         }
 
         if(emlakForm) {
             emlakForm.addEventListener('submit', function(e) {
                 e.preventDefault();
-                if(!kullaniciGirisYapti) { alert("İlan eklemek için öncelikle giriş yapmalısınız!"); return; }
+                if(!window.kullaniciGirisYapti) { alert("İlan eklemek için öncelikle giriş yapmalısınız!"); return; }
 
                 const telefon = document.getElementById('ilanTelefonSeçimi').value;
-                if(!telefon) { alert("Lütfen profilinizden en az bir telefon numarası ekleyin!"); return; }
+                if(!telefon) { alert("Lütfen profilinizden en az bir telephone numarası ekleyin!"); return; }
 
                 const baslik = document.getElementById('ilanBaslik').value;
                 let fiyat = document.getElementById('ilanFiyat').value;
@@ -649,7 +609,6 @@
 
                 fiyat = Number(fiyat).toLocaleString('tr-TR');
 
-                // Görseller için yerel Base64 dönüştürme simülasyonu
                 let yüklenenGörseller = [];
                 let yüklendiCount = 0;
 
@@ -662,7 +621,7 @@
                         if (yüklendiCount === dosyaElementi.files.length) {
                             ilanlar.unshift({
                                 id: Date.now(),
-                                sahip: aktifKullaniciEposta,
+                                sahip: window.aktifKullaniciEposta,
                                 baslik: baslik,
                                 fiyat: fiyat,
                                 oda: oda,
@@ -671,7 +630,7 @@
                                 gorseller: yüklenenGörseller
                             });
                             localStorage.setItem('mulkjet_ilanlar', JSON.stringify(ilanlar));
-                            ilanlariRenderEt();
+                            window.ilanlariRenderEt();
                             emlakForm.reset();
                             document.getElementById('ilanIlce').innerHTML = '<option value="">Önce İl Seçin</option>';
                             alert("Harika! İlanınız kalıcı olarak kaydedildi ve yayına alındı.");
@@ -682,9 +641,10 @@
             });
         }
 
+        // Başlangıç Çalıştırmaları
         illeriDoldur();
-        arayuzOturumKontrol();
-        ilanlariRenderEt();
+        window.arayuzOturumKontrol();
+        window.ilanlariRenderEt();
     </script>
 </body>
 </html>
