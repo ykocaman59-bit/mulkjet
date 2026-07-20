@@ -222,12 +222,12 @@
         <p class="text-xs text-red-400 mt-2">İş Ortaklığı Modeli: Bu platform üzerinden yapılan gayrimenekul işlemlerinde %2 hizmet komisyonu uygulanır.</p>
     </footer>
 
-                <!-- FIREBASE KÜTÜPHANELERİ (Modül Olarak Eklendi) -->
+    <!-- FIREBASE KÜTÜPHANELERİ (Modül Olarak Eklendi) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, signInWithRedirect, getRedirectResult, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-        // Firebase Proje Yapılandırmanız
+        // Firebase Proje Yapılandırmanız (Senin Projene Göre Güncellendi)
         const firebaseConfig = {
             apiKey: "AIzaSyD7mIxqpIYuYSK2RCVl9p1gKMREpizyzIQ",
             authDomain: "mulkjet-app.firebaseapp.com",
@@ -242,62 +242,44 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const provider = new GoogleAuthProvider();
-        provider.setCustomParameters({ prompt: 'select_account' });
 
-        // Kullanıcı Giriş Bilgilerini Kaydeden Ortak Fonksiyon
-        function kullaniciyiSistemeKaydet(user) {
-            window.kullaniciGirisYapti = true;
-            window.aktifKullaniciEposta = user.email;
-            
-            localStorage.setItem('mulkjet_giris_durum', 'true');
-            localStorage.setItem('mulkjet_aktif_user', user.email);
-
-            let veriTabaniUyeleri = JSON.parse(localStorage.getItem('mulkjet_uyeler')) || [];
-            const kullanıcıVarMi = veriTabaniUyeleri.find(u => u.email.toLowerCase() === user.email.toLowerCase());
-            
-            if (!kullanıcıVarMi) {
-                veriTabaniUyeleri.push({ 
-                    email: user.email, 
-                    foto: user.photoURL || "", 
-                    telefonlar: [] 
-                });
-                localStorage.setItem('mulkjet_uyeler', JSON.stringify(veriTabaniUyeleri));
-            }
-
-            // Arayüz fonksiyonlarının varlığını kontrol ederek tetikliyoruz
-            if (typeof window.arayuzOturumKontrol === 'function') window.arayuzOturumKontrol();
-            if (typeof window.ilanlariRenderEt === 'function') window.ilanlariRenderEt();
-        }
-
-        // 1. Yönlendirme Dönüşünü Yakalama
-        getRedirectResult(auth)
-            .then((result) => {
-                if (result && result.user) {
-                    kullaniciyiSistemeKaydet(result.user);
-                }
-            })
-            .catch((error) => {
-                console.error("Yönlendirme hatası:", error);
-            });
-
-        // 2. Dinamik Durum Takipçisi (Giriş yapılıp yönlenince tetiklenir)
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                kullaniciyiSistemeKaydet(user);
-            }
-        });
-
-        // Butona Basıldığında Tetiklenen Yönlendirme Fonksiyonu
+        // Cihazdaki Gmail Hesaplarını Listelemeyi Sağlayan Tetikleyici Fonksiyon
         window.aksiyonFirebaseGoogleGiris = async () => {
             try {
-                await signInWithRedirect(auth, provider);
+                // Bu metot cihazdaki kayıtlı maimleri pencere olarak listeler
+                const result = await signInWithPopup(auth, provider);
+                const user = result.user;
+
+                // Giriş başarılıysa bilgileri yerel veritabanıyla eşleştir
+                window.kullaniciGirisYapti = true;
+                window.aktifKullaniciEposta = user.email;
+                
+                localStorage.setItem('mulkjet_giris_durum', 'true');
+                localStorage.setItem('mulkjet_aktif_user', user.email);
+
+                // Eğer kullanıcı veritabanımızda yoksa yeni bir kayıt nesnesi oluştur
+                let veriTabaniUyeleri = JSON.parse(localStorage.getItem('mulkjet_uyeler')) || [];
+                const kullanıcıVarMi = veriTabaniUyeleri.find(u => u.email.toLowerCase() === user.email.toLowerCase());
+                
+                if (!kullanıcıVarMi) {
+                    veriTabaniUyeleri.push({ 
+                        email: user.email, 
+                        foto: user.photoURL || "", 
+                        telefonlar: [] 
+                    });
+                    localStorage.setItem('mulkjet_uyeler', JSON.stringify(veriTabaniUyeleri));
+                }
+
+                window.arayuzOturumKontrol();
+                alert(`Google ile Giriş Başarılı! Hoş geldiniz.`);
+                window.ilanlariRenderEt();
             } catch (error) {
-                console.error("Giriş başlatılamadı: ", error);
-                alert("Giriş işlemi başlatılamadı.");
+                console.error("Giriş sırasında bir hata oluştu: ", error);
+                alert("Giriş işlemi iptal edildi veya bir hata oluştu.");
             }
         };
 
-        // Çıkış fonksiyonu
+        // Çıkış fonksiyonunu Firebase uyumlu hale getirme
         window.sanalCikisYap = async () => {
             await signOut(auth);
             window.kullaniciGirisYapti = false;
@@ -307,12 +289,11 @@
             localStorage.setItem('mulkjet_giris_durum', 'false');
             localStorage.removeItem('mulkjet_aktif_user');
             
-            if (typeof window.arayuzOturumKontrol === 'function') window.arayuzOturumKontrol();
+            window.arayuzOturumKontrol();
             alert("Oturum kapatıldı.");
-            if (typeof window.ilanlariRenderEt === 'function') window.ilanlariRenderEt();
+            window.ilanlariRenderEt();
         };
     </script>
-    
 
     <!-- GENEL UYGULAMA MANTIĞI SCRIPTİ -->
     <script>
