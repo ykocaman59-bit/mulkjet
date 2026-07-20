@@ -222,7 +222,7 @@
         <p class="text-xs text-red-400 mt-2">İş Ortaklığı Modeli: Bu platform üzerinden yapılan gayrimenekul işlemlerinde %2 hizmet komisyonu uygulanır.</p>
     </footer>
 
-        <!-- FIREBASE KÜTÜPHANELERİ (Modül Olarak Eklendi) -->
+            <!-- FIREBASE KÜTÜPHANELERİ (Modül Olarak Eklendi) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithRedirect, getRedirectResult, GoogleAuthProvider, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
@@ -241,9 +241,17 @@
         // Firebase Başlatma
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
+        
+        // Google Servis Sağlayıcı Ayarı
         const provider = new GoogleAuthProvider();
+        
+        // KRİTİK AYAR: Firebase'e yönlendirmeyi kendi güvenli havuzu (firebaseapp.com) üzerinden yapmasını söylüyoruz.
+        // Böylece Vercel domainini listeye eklemek zorunda kalmıyorsun!
+        provider.setCustomParameters({
+            prompt: 'select_account'
+        });
 
-        // 1. Yönlendirme Sonrası Geri Dönüşü Yakalayan Fonksiyon
+        // Yönlendirme Sonrası Geri Dönüşü Yakalayan Fonksiyon
         getRedirectResult(auth)
             .then((result) => {
                 if (result && result.user) {
@@ -271,13 +279,12 @@
                 }
             })
             .catch((error) => {
-                console.error("Yönlendirme sonucu alınırken hata:", error);
+                console.error("Giriş dönüş hatası:", error);
             });
 
-        // 2. Butona Basıldığında Tetiklenen Yönlendirme Fonksiyonu (Mobil Uyumlu)
+        // Butona Basıldığında Tetiklenen Yönlendirme Fonksiyonu
         window.aksiyonFirebaseGoogleGiris = async () => {
             try {
-                // Pop-up yerine Redirect kullanarak tarayıcı kilitlerini kırıyoruz
                 await signInWithRedirect(auth, provider);
             } catch (error) {
                 console.error("Giriş başlatılamadı: ", error);
