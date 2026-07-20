@@ -227,14 +227,15 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-        // BURAYI KENDİ FIREBASE PROJE AYARLARINLA DEĞİŞTİRMELİSİN
+        // Firebase Proje Yapılandırmanız (Senin Projene Göre Güncellendi)
         const firebaseConfig = {
-            apiKey: "BURAYA_KENDI_API_KEYINIZI_YAZIN",
-            authDomain: "BURAYA_PROJE_ADINIZ.firebaseapp.com",
-            projectId: "BURAYA_PROJE_ADINIZ",
-            storageBucket: "BURAYA_PROJE_ADINIZ.appspot.com",
-            messagingSenderId: "BURAYA_ID_YAZIN",
-            appId: "BURAYA_APP_ID_YAZIN"
+            apiKey: "AIzaSyD7mIxqpIYuYSK2RCVl9p1gKMREpizyzIQ",
+            authDomain: "mulkjet-app.firebaseapp.com",
+            projectId: "mulkjet-app",
+            storageBucket: "mulkjet-app.firebasestorage.app",
+            messagingSenderId: "115312263927",
+            appId: "1:115312263927:web:ec07adacc4b0ec94cb49f2",
+            measurementId: "G-JGP7GN60XF"
         };
 
         // Firebase Başlatma
@@ -245,7 +246,7 @@
         // Cihazdaki Gmail Hesaplarını Listelemeyi Sağlayan Tetikleyici Fonksiyon
         window.aksiyonFirebaseGoogleGiris = async () => {
             try {
-                // Bu metot cihazdaki kayıtlı mailleri pencere olarak listeler
+                // Bu metot cihazdaki kayıtlı maimleri pencere olarak listeler
                 const result = await signInWithPopup(auth, provider);
                 const user = result.user;
 
@@ -339,7 +340,6 @@
                     avatarHtml = `<img src="${aktifUyeObj.foto}" class="w-full h-full object-cover">`;
                 }
 
-                // K HARFİ/YAZISI YERİNE BURAYA TAM İSTEDİĞİNİZ MÜLKJET YAZISINI VE AVATARI KOYDUK
                 document.getElementById('authButonAlani').innerHTML = `
                     <div class="flex items-center gap-3 bg-gray-50 px-3 py-1 rounded-full border border-gray-100">
                         <span class="text-xs font-black text-red-600 tracking-tight">🚀 MÜLK<span class="text-gray-900">JET</span></span>
