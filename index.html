@@ -228,7 +228,10 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
+        
+        // Google Sağlayıcı Ayarları
         const provider = new GoogleAuthProvider();
+        // Cihazdaki tüm Gmail hesaplarını zorunlu olarak listelemesi için prompt parametresi ekliyoruz
         provider.setCustomParameters({ prompt: 'select_account' });
 
         // Global Durum Yönetimi
@@ -271,9 +274,10 @@
                 let uyeler = JSON.parse(localStorage.getItem('mulkjet_uyeler')) || [];
                 let aktifUyeObj = uyeler.find(u => u.email.toLowerCase() === aktifKullaniciEposta.toLowerCase());
                 
+                // Google Profil Fotoğrafı Kontrolü ve Ekrana Basılması
                 let avatarHtml = aktifKullaniciEposta.charAt(0).toUpperCase();
-                if(aktifUyeObj && aktifUyeObj.foto) {
-                    avatarHtml = `<img src="${aktifUyeObj.foto}" class="w-full h-full object-cover">`;
+                if (aktifUyeObj && aktifUyeObj.foto) {
+                    avatarHtml = `<img src="${aktifUyeObj.foto}" class="w-full h-full object-cover" referrerpolicy="no-referrer">`;
                 }
 
                 authButonAlani.innerHTML = `
@@ -301,7 +305,7 @@
             }
         };
 
-        // Veri Listeleme ve Render İşlemi (Firestore Öncelikli Entegrasyon)
+        // Veri Listeleme ve Render İşlemi (Firestore Entegrasyon)
         const ilanlariRenderEt = async () => {
             const ilanListesi = document.getElementById('ilanListesi');
             const ilanSayac = document.getElementById('ilanSayac');
@@ -359,7 +363,6 @@
                         slaytHtml = `<img src="https://via.placeholder.com/400x250" class="w-full h-full object-cover flex-shrink-0 snap-start">`;
                     }
 
-                    const siteTamLinki = window.location.href;
                     const wpSablonu = `Merhaba, Mülkjet üzerinden verdiğiniz ilan için ulaşıyorum.%0A%0A🏠 *İlan:* ${encodeURIComponent(ilan.baslik)}%0A💰 *Fiyat:* ${ilan.fiyat} TL%0A📍 *Konum:* ${encodeURIComponent(ilan.konum)}`;
                     const ilanSahibiMi = kullaniciGirisYapti && (ilan.sahip.toLowerCase() === aktifKullaniciEposta.toLowerCase());
 
@@ -431,7 +434,7 @@
                     gorseller: ilanVerisi.gorseller,
                     tarih: new Date().toISOString()
                 });
-                alert("Harika! İlanınız başarıyla Firestore veritabanına kaydedildi.");
+                alert("Harika! İlanınız başarıyla Mülkjet veritabanına kaydedildi.");
                 ilanlariRenderEt();
             } catch (error) {
                 alert("Veritabanına eklenirken yetki hatası oluştu.");
@@ -456,7 +459,7 @@
             if(!u) return;
 
             const avatarAlani = document.getElementById('profilAvatarAlani');
-            avatarAlani.innerHTML = u.foto ? `<img src="${u.foto}" class="w-full h-full object-cover">` : aktifKullaniciEposta.charAt(0).toUpperCase();
+            avatarAlani.innerHTML = u.foto ? `<img src="${u.foto}" class="w-full h-full object-cover" referrerpolicy="no-referrer">` : aktifKullaniciEposta.charAt(0).toUpperCase();
 
             const telListesi = document.getElementById('profilTelefonListesi');
             telListesi.innerHTML = '';
@@ -533,12 +536,16 @@
         const aksiyonFirebaseGoogleGiris = async () => { 
             try { 
                 const result = await signInWithPopup(auth, provider);
-                if(result && result.user) kullaniciyiSistemeKaydet(result.user);
+                if(result && result.user) {
+                    kullaniciyiSistemeKaydet(result.user);
+                }
             } catch (error) { 
+                console.error("Giriş hatası detay:", error);
                 alert(`Giriş Başarısız! Hata Kodu: ${error.code}`); 
             } 
         };
 
+        // Google'dan gelen verileri ve profil fotosunu local hafızaya işleyen fonksiyon
         const kullaniciyiSistemeKaydet = (user) => {
             kullaniciGirisYapti = true;
             aktifKullaniciEposta = user.email;
@@ -546,11 +553,23 @@
             localStorage.setItem('mulkjet_aktif_user', user.email);
             
             let uyeler = JSON.parse(localStorage.getItem('mulkjet_uyeler')) || [];
-            let varMi = uyeler.find(u => u.email.toLowerCase() === user.email.toLowerCase());
-            if(!varMi) {
-                uyeler.push({ email: user.email.toLowerCase(), foto: user.photoURL || "", telefonlar: [] });
-                localStorage.setItem('mulkjet_uyeler', JSON.stringify(uyeler));
+            let idx = uyeler.findIndex(u => u.email.toLowerCase() === user.email.toLowerCase());
+            
+            if(idx === -1) {
+                // Eğer üye ilk kez kayıt oluyorsa Google profil fotoğrafını kaydediyoruz
+                uyeler.push({ 
+                    email: user.email.toLowerCase(), 
+                    foto: user.photoURL || "", 
+                    telefonlar: [] 
+                });
+            } else {
+                // Mevcut üyeyse ve daha önce özel fotoğraf yüklemediyse Google fotoğrafını güncelliyoruz
+                if(!uyeler[idx].foto) {
+                    uyeler[idx].foto = user.photoURL || "";
+                }
             }
+            localStorage.setItem('mulkjet_uyeler', JSON.stringify(uyeler));
+            
             arayuzOturumKontrol();
             ilanlariRenderEt();
         };
@@ -568,7 +587,8 @@
         // Hesap Kalıcı Kapatma ve İlan Temizliği
         const aksiyonProfilKaliciSil = async (e) => {
             e.preventDefault();
-            const neden = document.querySelector('input[name="silmeNedeni"]:checked').value;
+            const nedenSecim = document.querySelector('input[name="silmeNedeni"]:checked');
+            const neden = nedenSecim ? nedenSecim.value : "Belirtilmedi";
             
             if(confirm("Hesabınızla birlikte tüm ilanlarınız da silinecektir. Emin misiniz?")) {
                 try {
@@ -659,6 +679,20 @@
             let yuklenenGorseller = [];
             let yuklendiCount = 0;
 
+            if (dosyaElementi.files.length === 0) {
+                yeniIlanYayinla({
+                    baslik: baslik,
+                    fiyat: fiyat,
+                    oda: oda,
+                    konum: `${ilAdi}, ${ilceAdi}, ${mahalleDetay}`,
+                    tel: telefon,
+                    gorseller: []
+                });
+                document.getElementById('emlakForm').reset();
+                document.getElementById('ilanIlce').innerHTML = '<option value="">Önce İl Seçin</option>';
+                return;
+            }
+
             for (let i = 0; i < dosyaElementi.files.length; i++) {
                 const reader = new FileReader();
                 reader.onloadend = function() {
@@ -682,13 +716,15 @@
             }
         });
 
-        // Başlangıç Yüklemeleri
-        auth.onAuthStateChanged((user) => {
+        // Başlangıç Yüklemeleri ve Firebase Oturum Takibi
+        onAuthStateChanged(auth, (user) => {
             if (user) {
-                kullaniciGirisYapti = true;
-                aktifKullaniciEposta = user.email;
-                localStorage.setItem('mulkjet_giris_durum', 'true');
-                localStorage.setItem('mulkjet_aktif_user', user.email);
+                kullaniciyiSistemeKaydet(user);
+            } else {
+                localStorage.setItem('mulkjet_giris_durum', 'false'); 
+                localStorage.removeItem('mulkjet_aktif_user'); 
+                kullaniciGirisYapti = false; 
+                aktifKullaniciEposta = "";
             }
             illeriDoldur();
             arayuzOturumKontrol();
