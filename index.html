@@ -25,7 +25,9 @@
                 <span>🚀</span> MÜLK<span class="text-gray-900">JET</span>
             </button>
             <div class="flex items-center gap-4">
-                <div id="authButonAlani"></div>
+                <div id="authButonAlani" class="min-w-[120px] flex justify-end">
+                    <!-- Giriş butonu buraya dinamik gelecek -->
+                </div>
                 <button type="button" id="yeniIlanEkleLink" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-xl font-bold transition shadow-xs cursor-pointer">
                     + İlan Ver
                 </button>
@@ -50,22 +52,14 @@
             <aside class="lg:col-span-1 space-y-4">
                 <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-xs">
                     <h3 class="font-bold text-gray-900 mb-2 pb-1 border-b">📁 Kategoriler</h3>
-                    <div id="dinamikKategoriAgaci" class="text-xs space-y-1 max-h-[400px] overflow-y-auto pr-1"></div>
+                    <div id="dinamikKategoriAgaci" class="text-xs space-y-1 max-h-[400px] overflow-y-auto pr-1">
+                        <!-- Kategoriler js ile yüklenecek -->
+                    </div>
                 </div>
 
                 <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-xs space-y-3">
                     <h3 class="font-bold text-gray-900 pb-1 border-b">🎛️ Gelişmiş Filtrele</h3>
                     
-                    <div>
-                        <label class="block text-[11px] font-bold text-gray-500 mb-1">Sıralama</label>
-                        <select id="filtreSiralama" class="w-full p-2 border rounded-lg text-xs bg-white outline-none">
-                            <option value="yeni">En Yeni İlan</option>
-                            <option value="eski">En Eski İlan</option>
-                            <option value="fiyatYuksek">En Yüksek Fiyat</option>
-                            <option value="fiyatDusuk">En Düşük Fiyat</option>
-                        </select>
-                    </div>
-
                     <div>
                         <label class="block text-[11px] font-bold text-gray-500 mb-1">📍 Adres</label>
                         <select id="filtreIl" class="w-full p-2 border rounded-lg text-xs bg-white outline-none mb-1"><option value="">Tüm İller</option></select>
@@ -86,45 +80,13 @@
                     <div id="ozelOtomobilFiltreleri" class="hidden border-t pt-2 space-y-2">
                         <div class="grid grid-cols-2 gap-1.5">
                             <div>
-                                <label class="block text-[11px] font-bold text-gray-500">Min Model Yılı</label>
+                                <label class="block text-[11px] font-bold text-gray-500">Min Yıl</label>
                                 <input type="number" id="filtreMinYil" class="w-full p-1.5 border rounded-lg text-xs">
                             </div>
                             <div>
-                                <label class="block text-[11px] font-bold text-gray-500">Max Model Yılı</label>
+                                <label class="block text-[11px] font-bold text-gray-500">Max Yıl</label>
                                 <input type="number" id="filtreMaxYil" class="w-full p-1.5 border rounded-lg text-xs">
                             </div>
-                        </div>
-                        <div class="grid grid-cols-2 gap-1.5">
-                            <div>
-                                <label class="block text-[11px] font-bold text-gray-500">Min KM</label>
-                                <input type="number" id="filtreMinKm" class="w-full p-1.5 border rounded-lg text-xs">
-                            </div>
-                            <div>
-                                <label class="block text-[11px] font-bold text-gray-500">Max KM</label>
-                                <input type="number" id="filtreMaxKm" class="w-full p-1.5 border rounded-lg text-xs">
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block text-[11px] font-bold text-gray-500">Vites</label>
-                            <select id="filtreVites" class="w-full p-2 border rounded-lg text-xs bg-white"><option value="">Tümü</option><option>Manuel</option><option>Otomatik</option></select>
-                        </div>
-                        <div class="grid grid-cols-2 gap-2 text-xs">
-                            <label class="flex items-center gap-1"><input type="checkbox" id="filtreAgirKayit"> Ağır Hasarlı</label>
-                            <label class="flex items-center gap-1"><input type="checkbox" id="filtrePert"> Pert Kayıtlı</label>
-                        </div>
-                    </div>
-
-                    <div id="ozelArsaFiltreleri" class="hidden border-t pt-2 space-y-2">
-                        <div>
-                            <label class="block text-[11px] font-bold text-gray-500">İmar Durumu</label>
-                            <select id="filtreImarDurumu" class="w-full p-2 border rounded-lg text-xs bg-white"><option value="">Tümü</option><option>Konut</option><option>Ticari</option><option>Tarla</option><option>Bağ/Bahçe</option></select>
-                        </div>
-                    </div>
-
-                    <div id="ozelDukkanFiltreleri" class="hidden border-t pt-2 space-y-2">
-                        <div>
-                            <label class="block text-[11px] font-bold text-gray-500">Devren Durumu</label>
-                            <select id="filtreDevren" class="w-full p-2 border rounded-lg text-xs bg-white"><option value="">Tümü</option><option>Devren</option><option>Düz Kiralık/Satılık</option></select>
                         </div>
                     </div>
 
@@ -154,7 +116,7 @@
     <div id="ilanVerFormGorunumu" class="hidden max-w-4xl mx-auto px-4 py-6">
         <div id="formKilitliAlan" class="bg-white p-12 border rounded-xl text-center">
             <h2 class="text-lg font-bold mb-3">İlan Vermek İçin Giriş Yapın</h2>
-            <button type="button" id="kilitliAlanGirisBtn" class="mx-auto bg-white border border-gray-300 text-gray-700 font-bold px-4 py-2 rounded-xl shadow-xs flex items-center gap-2 cursor-pointer">
+            <button type="button" id="kilitliAlanGirisBtn" class="mx-auto bg-white border border-gray-300 text-gray-700 font-bold px-4 py-2 rounded-xl shadow-xs flex items-center justify-center gap-2 cursor-pointer hover:bg-gray-50">
                 <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-4 h-4" alt="Google"> Google ile Giriş Yap
             </button>
         </div>
@@ -163,7 +125,7 @@
             <h2 class="text-xl font-bold border-b pb-2">➕ Yeni İlan Oluştur</h2>
             <form id="anaMulkForm" class="space-y-4">
                 
-                <div class="grid grid-cols-2 md:grid-cols-5 gap-3 bg-gray-50 p-3 rounded-xl">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-3 bg-gray-50 p-3 rounded-xl">
                     <div>
                         <label class="block text-xs font-bold text-gray-600">Ana Kategori</label>
                         <select id="formAnaKat" required class="w-full p-2 border rounded-lg bg-white text-xs"></select>
@@ -179,10 +141,6 @@
                     <div id="formModelBlok" class="hidden">
                         <label class="block text-xs font-bold text-gray-600">Model</label>
                         <select id="formModel" class="w-full p-2 border rounded-lg bg-white text-xs"></select>
-                    </div>
-                    <div id="formPaketBlok" class="hidden">
-                        <label class="block text-xs font-bold text-gray-600">Paket</label>
-                        <select id="formPaket" class="w-full p-2 border rounded-lg bg-white text-xs"></select>
                     </div>
                 </div>
 
@@ -201,89 +159,6 @@
                         <div>
                             <label class="block text-xs font-bold">Vites</label>
                             <select id="formVites" class="w-full p-2 border rounded-lg bg-white"><option>Manuel</option><option>Otomatik</option></select>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold">Motor Hacmi</label>
-                            <input type="text" id="formTork" placeholder="Örn: 1.6 Mjet" class="w-full p-2 border rounded-lg bg-white">
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-3 gap-3">
-                        <div>
-                            <label class="block text-xs font-bold">Ağır Hasar Kaydı</label>
-                            <select id="formAgirKayit" class="w-full p-2 border rounded-lg bg-white"><option value="Yok">Yok</option><option value="Var">Var</option></select>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold">Pert Durumu</label>
-                            <select id="formPert" class="w-full p-2 border rounded-lg bg-white"><option value="Yok">Yok</option><option value="Var">Var</option></select>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold">Tramer Kaydı (TL)</label>
-                            <input type="number" id="formTramer" placeholder="0" class="w-full p-2 border rounded-lg bg-white">
-                        </div>
-                    </div>
-
-                    <!-- EKSPERTİZ ŞEMASI -->
-                    <div class="border-t pt-3">
-                        <label class="block text-xs font-bold text-gray-700 mb-2">📊 Kaporta Ekspertiz Şeması (Parçalara tıklayarak durumu değiştirin)</label>
-                        <div class="flex flex-col md:flex-row gap-6 items-center bg-white p-4 rounded-xl border">
-                            <div class="relative w-[180px] h-[300px] border bg-gray-50 rounded flex items-center justify-center">
-                                <div class="eksper-nokta durum-orjinal" style="top:15%; left:50%;" data-parca="Ön Kaput" title="Ön Kaput"></div>
-                                <div class="eksper-nokta durum-orjinal" style="top:5%; left:50%;" data-parca="Ön Tampon" title="Ön Tampon"></div>
-                                <div class="eksper-nokta durum-orjinal" style="top:25%; left:20%;" data-parca="Sol Ön Çamurluk" title="Sol Ön Çamurluk"></div>
-                                <div class="eksper-nokta durum-orjinal" style="top:25%; left:80%;" data-parca="Sağ Ön Çamurluk" title="Sağ Ön Çamurluk"></div>
-                                <div class="eksper-nokta durum-orjinal" style="top:42%; left:20%;" data-parca="Sol Ön Kapı" title="Sol Ön Kapı"></div>
-                                <div class="eksper-nokta durum-orjinal" style="top:42%; left:80%;" data-parca="Sağ Ön Kapı" title="Sağ Ön Kapı"></div>
-                                <div class="eksper-nokta durum-orjinal" style="top:60%; left:20%;" data-parca="Sol Arka Kapı" title="Sol Arka Kapı"></div>
-                                <div class="eksper-nokta durum-orjinal" style="top:60%; left:80%;" data-parca="Sağ Arka Kapı" title="Sağ Arka Kapı"></div>
-                                <div class="eksper-nokta durum-orjinal" style="top:78%; left:20%;" data-parca="Sol Arka Çamurluk" title="Sol Arka Çamurluk"></div>
-                                <div class="eksper-nokta durum-orjinal" style="top:78%; left:80%;" data-parca="Sağ Arka Çamurluk" title="Sağ Arka Çamurluk"></div>
-                                <div class="eksper-nokta durum-orjinal" style="top:90%; left:50%;" data-parca="Bagaj Kapağı" title="Bagaj Kapağı"></div>
-                                <div class="eksper-nokta durum-orjinal" style="top:50%; left:50%;" data-parca="Tavan" title="Tavan"></div>
-                            </div>
-                            <div class="text-xs space-y-1">
-                                <div class="flex items-center gap-2"><span class="w-3 h-3 durum-orjinal inline-block rounded-full"></span> Gri: Orijinal</div>
-                                <div class="flex items-center gap-2"><span class="w-3 h-3 durum-boyali inline-block rounded-full"></span> Sarı: Boyalı</div>
-                                <div class="flex items-center gap-2"><span class="w-3 h-3 durum-lokal inline-block rounded-full"></span> Mavi: Lokal Boyalı</div>
-                                <div class="flex items-center gap-2"><span class="w-3 h-3 durum-degisen inline-block rounded-full"></span> Kırmızı: Değişen</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Arsa Özellik Formu -->
-                <div id="formArsaAlanlari" class="hidden bg-orange-50/50 p-4 rounded-xl border border-orange-100 space-y-3">
-                    <h4 class="font-bold text-orange-800 text-xs">🏞️ Arsa Detay Bilgileri</h4>
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                        <div>
-                            <label class="block text-xs font-bold">İmar Durumu</label>
-                            <select id="formImarDurumu" class="w-full p-2 border rounded-lg bg-white"><option>Konut</option><option>Ticari</option><option>Tarla</option><option>Bağ/Bahçe</option></select>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold">Ada No</label>
-                            <input type="text" id="formAda" class="w-full p-2 border rounded-lg bg-white">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold">Parsel No</label>
-                            <input type="text" id="formParsel" class="w-full p-2 border rounded-lg bg-white">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold">Gabari / Kaks</label>
-                            <input type="text" id="formKaks" placeholder="Örn: 0.60" class="w-full p-2 border rounded-lg bg-white">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- İş Yeri / Dükkan Formu -->
-                <div id="formDukkanAlanlari" class="hidden bg-blue-50/50 p-4 rounded-xl border border-blue-100 space-y-3">
-                    <h4 class="font-bold text-blue-800 text-xs">🏢 Dükkan & İş Yeri Bilgileri</h4>
-                    <div class="grid grid-cols-2 gap-3">
-                        <div>
-                            <label class="block text-xs font-bold">Devren mi?</label>
-                            <select id="formDevren" class="w-full p-2 border rounded-lg bg-white"><option value="Düz Kiralık/Satılık">Hayır (Normal İlan)</option><option value="Devren">Evet (Devren Mülk)</option></select>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold">Metrekare (m²)</label>
-                            <input type="number" id="formMetrekare" class="w-full p-2 border rounded-lg bg-white">
                         </div>
                     </div>
                 </div>
@@ -343,7 +218,6 @@
         const db = getFirestore(app);
         const provider = new GoogleAuthProvider();
         
-        // KESİN HESAP SEÇME PENCERESİNİ TETİKLEYEN PARAMETRELER
         provider.setCustomParameters({ 
             prompt: 'select_account',
             auth_type: 'rerequest'
@@ -355,121 +229,75 @@
 
         const sehirData = { "İstanbul": ["Sultanbeyli", "Kadıköy", "Pendik"], "Ankara": ["Çankaya"], "İzmir": ["Konak"] };
 
-        // SAHİBİNDEN.COM PARAMETRELERİNE UYGUN 96 ADET ARABA MARKASI (EKSİKSİZ TAM LİSTE)
-        const arabalarSemasi = {
-            "Alfa Romeo": {"Giulietta": ["Distinctive"]}, "Aston Martin": {"DB11": ["V8"]}, "Audi": {"A3": ["Sportback"]}, "Bentley": {"Continental": ["GT"]},
-            "BMW": {"3 Serisi": ["M Sport"]}, "Bugatti": {"Chiron": ["Sport"]}, "Buick": {"Regal": ["Custom"]}, "Cadillac": {"Escalade": ["Platinum"]},
-            "Caterham": {"Seven": ["270"]}, "Chery": {"Tiggo 7 Pro": ["Excellent"]}, "Chevrolet": {"Cruze": ["LT"]}, "Chrysler": {"300C": ["CRD"]},
-            "Citroen": {"C3": ["Feel"]}, "Cupra": {"Formentor": ["VZ"]}, "Dacia": {"Duster": ["Prestige"]}, "Daewoo": {"Lanos": ["SX"]},
-            "Daihatsu": {"Sirion": ["Sport"]}, "Dodge": {"Challenger": ["RT"]}, "DS Automobiles": {"DS 7": ["Opera"]}, "Ferrari": {"488": ["GTB"]},
-            "Fiat": {"Egea": ["Urban"]}, "Fisker": {"Karma": ["Eco"]}, "Ford": {"Focus": ["Titanium"]}, "Geely": {"Emgrand": ["EC7"]},
-            "GMC": {"Yukon": ["Denali"]}, "Honda": {"Civic": ["Executive"]}, "Hummer": {"H2": ["Luxury"]}, "Hyundai": {"i20": ["Style"]},
-            "Infiniti": {"FX35": ["Premium"]}, "Isuzu": {"D-Max": ["V-Cross"]}, "Jaguar": {"XF": ["Portfolio"]}, "Jeep": {"Grand Cherokee": ["Limited"]},
-            "Kia": {"Sportage": ["Elegance"]}, "Koenigsegg": {"Jesko": ["Absolut"]}, "Lada": {"Niva": ["Urban"]}, "Lamborghini": {"Aventador": ["LP700"]},
-            "Lancia": {"Delta": ["Hardo"]}, "Land Rover": {"Range Rover": ["Autobiography"]}, "Lexus": {"RX": ["Executive"]}, "Lincoln": {"Navigator": ["Reserve"]},
-            "Lotus": {"Evora": ["GT"]}, "Maruti": {"800": ["Std"]}, "Maserati": {"Ghibli": ["GranLusso"]}, "Maybach": {"S Class": ["S560"]},
-            "Mazda": {"3": ["Motion"]}, "McLaren": {"720S": ["Spider"]}, "Mercedes-Benz": {"C Serisi": ["AMG"]}, "MG": {"HS": ["Luxury"]},
-            "Mini": {"Cooper": ["Countryman"]}, "Mitsubishi": {"Lancer": ["Invite"]}, "Morgan": {"Plus 4": ["Standard"]}, "Morris": {"Minor": ["Deluxe"]},
-            "Moskvich": {"412": ["Eco"]}, "Nissan": {"Qashqai": ["Sky Pack"]}, "Noble": {"M600": ["Speed"]}, "Oldsmobile": {"Cutlass": ["Supreme"]},
-            "Opel": {"Astra": ["Elegance"]}, "Packard": {"Clipper": ["Super"]}, "Pagani": {"Huayra": ["Roadster"]}, "Peugeot": {"3008": ["GT"]},
-            "Plymouth": {"Prowler": ["Base"]}, "Pontiac": {"Solstice": ["GXP"]}, "Porsche": {"Taycan": ["4S"]}, "Proton": {"Gen-2": ["Medium"]},
-            "Ram": {"1500": ["Laramie"]}, "Reliant": {"Robin": ["Super"]}, "Renault": {"Megane": ["Icon"]}, "Rolls-Royce": {"Phantom": ["Extended"]},
-            "Rover": {"75": ["Club"]}, "Saab": {"9-3": ["Vector"]}, "Saleen": {"S7": ["Twin Turbo"]}, "Saturn": {"Sky": ["Red Line"]},
-            "Scion": {"xB": ["Base"]}, "Seat": {"Leon": ["FR"]}, "Skoda": {"Octavia": ["Style"]}, "Smart": {"Fortwo": ["Passion"]},
-            "Spyker": {"C8": ["Laviolette"]}, "SsangYong": {"Korando": ["Limited"]}, "Subaru": {"Impreza": ["WRX"]}, "Suzuki": {"Swift": ["GLX"]},
-            "Tata": {"Indica": ["Trend"]}, "Tesla": {"Model 3": ["Long Range"]}, "Tofaş": {"Şahin": ["1.6"], "Doğan": ["SLX"]}, "Togg": {"T10X": ["V2"]},
-            "Toyota": {"Corolla": ["Flame"]}, "Triumph": {"Spitfire": ["MK4"]}, "TVR": {"Griffith": ["500"]}, "Vauxhall": {"Insignia": ["SRi"]},
-            "Vector": {"M12": ["Base"]}, "Venturi": {"Atlantique": ["300"]}, "Volkswagen": {"Golf": ["Highline"]}, "Volvo": {"S60": ["Advance"]},
-            "Wiesmann": {"MF3": ["Roadster"]}, "Willys": {"Jeep": ["Overland"]}, "Wolseley": {"Hornet": ["MK3"]}
-        };
+        // SAHİBİNDEN.COM PARAMETRELERİNE UYGUN 96 ADET ARABA MARKASI (TAM LİSTE)
+        const tumArabaMarkalari = [
+            "Alfa Romeo", "Aston Martin", "Audi", "Bentley", "BMW", "Bugatti", "Buick", "Cadillac", "Caterham", "Chery", 
+            "Chevrolet", "Chrysler", "Citroen", "Cupra", "Dacia", "Daewoo", "Daihatsu", "Dodge", "DS Automobiles", "Ferrari", 
+            "Fiat", "Fisker", "Ford", "Geely", "GMC", "Honda", "Hummer", "Hyundai", "Infiniti", "Isuzu", "Jaguar", 
+            "Jeep", "Kia", "Koenigsegg", "Lada", "Lamborghini", "Lancia", "Land Rover", "Lexus", "Lincoln", "Lotus", 
+            "Maruti", "Maserati", "Maybach", "Mazda", "McLaren", "Mercedes-Benz", "MG", "Mini", "Mitsubishi", "Morgan", 
+            "Morris", "Moskvich", "Nissan", "Noble", "Oldsmobile", "Opel", "Packard", "Pagani", "Peugeot", "Plymouth", 
+            "Pontiac", "Porsche", "Proton", "Ram", "Reliant", "Renault", "Rolls-Royce", "Rover", "Saab", "Saleen", 
+            "Saturn", "Scion", "Seat", "Skoda", "Smart", "Spyker", "SsangYong", "Subaru", "Suzuki", "Tata", "Tesla", 
+            "Tofaş", "Togg", "Toyota", "Triumph", "TVR", "Vauxhall", "Vector", "Venturi", "Volkswagen", "Volvo", 
+            "Wiesmann", "Willys", "Wolseley", "Zastava"
+        ];
 
-        const kategoriSemasi = {
-            "Emlak": {
-                "Satılık Konut": {}, "Kiralık Daire": {}, "Arsa": {}, "Devren Satılık İş Yeri": {}, "Devren Kiralık İş Yeri": {}
-            },
-            "Vasıta": {
-                "Otomobil": arabalarSemasi, "Mini Panelvan": {}, "Motosiklet": {}, "Moped (Elektrikli)": {}
-            }
-        };
-
-        const durumlar = ["orjinal", "boyali", "lokal", "degisen"];
-        document.querySelectorAll('.eksper-nokta').forEach(nokta => {
-            nokta.addEventListener('click', function() {
-                let suAnki = durumlar.findIndex(d => this.classList.contains('durum-' + d));
-                let sonraki = (suAnki + 1) % durumlar.length;
-                durumlar.forEach(d => this.classList.remove('durum-' + d));
-                this.classList.add('durum-' + durumlar[sonraki]);
-            });
+        const arabalarSemasi = {};
+        tumArabaMarkalari.forEach(marka => {
+            arabalarSemasi[marka] = { "Genel Model": ["Standart"] };
         });
 
+        const kategoriSemasi = {
+            "Emlak": { "Satılık Konut": {}, "Kiralık Daire": {}, "Arsa": {}, "Devren Satılık İş Yeri": {} },
+            "Vasıta": { "Otomobil": arabalarSemasi, "Mini Panelvan": {}, "Motosiklet": {}, "Moped (Elektrikli)": {} }
+        };
+
         const ekranGoster = (ekran) => {
-            document.getElementById('anaSayfaGorunumu').classList.add('hidden');
-            document.getElementById('ilanDetayGorunumu').classList.add('hidden');
-            document.getElementById('ilanVerFormGorunumu').classList.add('hidden');
-            if(ekran === 'ana') document.getElementById('anaSayfaGorunumu').classList.remove('hidden');
-            if(ekran === 'detay') document.getElementById('ilanDetayGorunumu').classList.remove('hidden');
-            if(ekran === 'form') document.getElementById('ilanVerFormGorunumu').classList.remove('hidden');
+            document.getElementById('anaSayfaGorunumu').style.display = 'none';
+            document.getElementById('ilanDetayGorunumu').style.display = 'none';
+            document.getElementById('ilanVerFormGorunumu').style.display = 'none';
+            
+            if(ekran === 'ana') document.getElementById('anaSayfaGorunumu').style.display = 'block';
+            if(ekran === 'detay') document.getElementById('ilanDetayGorunumu').style.display = 'block';
+            if(ekran === 'form') document.getElementById('ilanVerFormGorunumu').style.display = 'block';
         };
 
         const googleGirisAksiyon = async () => {
             try {
-                // Önbelleğe alınmış oturumu temizlemeye zorlamak için önce çıkış tetiklenir
                 await signOut(auth);
                 const result = await signInWithPopup(auth, provider);
                 if(result.user) {
                     oturumArayuzunuGuncelle();
-                    ilanlariCek();
                     ekranGoster('ana');
                 }
-            } catch (err) { console.error("Giriş Başarısız:", err); }
-        };
-
-        const cikisAksiyon = async () => {
-            await signOut(auth);
-            oturumArayuzunuGuncelle();
-            ekranGoster('ana');
+            } catch (err) { console.error("Giriş hatası:", err); }
         };
 
         const oturumArayuzunuGuncelle = () => {
             const alan = document.getElementById('authButonAlani');
             const u = auth.currentUser;
             if(u) {
-                document.getElementById('formKilitliAlan').classList.add('hidden');
-                document.getElementById('formAcikAlan').classList.remove('hidden');
-                
-                const imgTag = u.photoURL 
-                    ? `<img src="${u.photoURL}" class="w-full h-full object-cover">`
-                    : `<span class="text-white text-xs font-bold">${u.email.charAt(0).toUpperCase()}</span>`;
-
-                alan.innerHTML = `
-                    <div class="flex items-center gap-2 bg-gray-100 p-1 rounded-full">
-                        <div class="w-7 h-7 bg-red-600 rounded-full flex items-center justify-center overflow-hidden border border-white shadow-xs">${imgTag}</div>
-                        <button id="navCikisBtn" class="text-xs text-gray-500 hover:text-red-600 font-bold px-1.5 cursor-pointer">Çıkış</button>
-                    </div>
-                `;
-                document.getElementById('navCikisBtn').onclick = cikisAksiyon;
+                document.getElementById('formKilitliAlan').style.display = 'none';
+                document.getElementById('formAcikAlan').style.display = 'block';
+                alan.innerHTML = `<button id="navCikisBtn" class="bg-gray-200 hover:bg-gray-300 text-gray-800 text-xs font-bold px-3 py-1.5 rounded-xl cursor-pointer">Çıkış Yap</button>`;
+                document.getElementById('navCikisBtn').onclick = async () => {
+                    await signOut(auth);
+                    oturumArayuzunuGuncelle();
+                    ekranGoster('ana');
+                };
             } else {
-                document.getElementById('formKilitliAlan').classList.remove('hidden');
-                document.getElementById('formAcikAlan').classList.add('hidden');
-                alan.innerHTML = `<button id="navGirisBtn" class="bg-red-600 hover:bg-red-700 text-white text-xs font-bold px-3 py-1.5 rounded-xl cursor-pointer">Google ile Giriş Yap</button>`;
+                document.getElementById('formKilitliAlan').style.display = 'block';
+                document.getElementById('formAcikAlan').style.display = 'none';
+                alan.innerHTML = `<button id="navGirisBtn" class="bg-red-600 hover:bg-red-700 text-white text-xs font-bold px-3 py-1.5 rounded-xl cursor-pointer">Giriş Yap</button>`;
                 document.getElementById('navGirisBtn').onclick = googleGirisAksiyon;
             }
         };
 
         const kategoriAgaciniOlustur = () => {
             const alan = document.getElementById('dinamikKategoriAgaci');
+            if(!alan) return;
             alan.innerHTML = "";
-
-            const filtreleSay = (ana, alt, marka, model, paket) => {
-                return globalIlanlar.filter(i => {
-                    if(ana && i.anaKategori !== ana) return false;
-                    if(alt && i.altKategori !== alt) return false;
-                    if(marka && i.marka !== marka) return false;
-                    if(model && i.model !== model) return false;
-                    if(paket && i.paket !== paket) return false;
-                    return true;
-                }).length;
-            };
 
             let tumBtn = document.createElement('div');
             tumBtn.className = `p-1.5 rounded font-bold cursor-pointer ${seciliKategoriPath[0]==='hepsi'?'bg-red-600 text-white':''}`;
@@ -478,42 +306,31 @@
             alan.appendChild(tumBtn);
 
             Object.keys(kategoriSemasi).forEach(ana => {
-                let anaSayi = filtreleSay(ana);
                 let divAna = document.createElement('div');
                 divAna.className = `pl-1 mt-2 font-bold flex justify-between cursor-pointer ${seciliKategoriPath[0]===ana?'text-red-600':''}`;
-                divAna.innerHTML = `<span>${ana==='Emlak'?'🏠':'🚗'} ${ana}</span> <span>(${anaSayi})</span>`;
+                divAna.innerHTML = `<span>${ana==='Emlak'?'🏠':'🚗'} ${ana}</span>`;
                 divAna.onclick = () => { seciliKategoriPath = [ana]; filtreAksiyonlariniYonet(); };
                 alan.appendChild(divAna);
 
                 if(seciliKategoriPath[0] === ana) {
                     Object.keys(kategoriSemasi[ana]).forEach(alt => {
-                        let altSayi = filtreleSay(ana, alt);
                         let divAlt = document.createElement('div');
                         divAlt.className = `pl-3 py-0.5 flex justify-between cursor-pointer ${seciliKategoriPath[1]===alt?'text-red-600 font-bold':''}`;
-                        divAlt.innerHTML = `<span>• ${alt}</span> <span>(${altSayi})</span>`;
+                        divAlt.innerHTML = `<span>• ${alt}</span>`;
                         divAlt.onclick = (e) => { e.stopPropagation(); seciliKategoriPath = [ana, alt]; filtreAksiyonlariniYonet(); };
                         alan.appendChild(divAlt);
 
-                        if(seciliKategoriPath[1] === alt && typeof kategoriSemasi[ana][alt] === 'object') {
-                            Object.keys(kategoriSemasi[ana][alt]).forEach(marka => {
-                                let mSayi = filtreleSay(ana, alt, marka);
+                        if(seciliKategoriPath[1] === alt && alt === 'Otomobil') {
+                            let mKutu = document.createElement('div');
+                            mKutu.className = "max-h-[150px] overflow-y-auto pl-4 border-l space-y-0.5 mt-1 no-scrollbar";
+                            tumArabaMarkalari.forEach(marka => {
                                 let divM = document.createElement('div');
-                                divM.className = `pl-5 text-[11px] flex justify-between cursor-pointer ${seciliKategoriPath[2]===marka?'text-orange-500 font-bold':''}`;
-                                divM.innerHTML = `<span>➡️ ${marka}</span> <span>(${mSayi})</span>`;
+                                divM.className = `text-[11px] cursor-pointer ${seciliKategoriPath[2]===marka?'text-orange-500 font-bold':''}`;
+                                divM.innerHTML = `➡️ ${marka}`;
                                 divM.onclick = (e) => { e.stopPropagation(); seciliKategoriPath = [ana, alt, marka]; filtreAksiyonlariniYonet(); };
-                                alan.appendChild(divM);
-
-                                if(seciliKategoriPath[2] === marka) {
-                                    Object.keys(kategoriSemasi[ana][alt][marka]).forEach(model => {
-                                        let modSayi = filtreleSay(ana, alt, marka, model);
-                                        let divMod = document.createElement('div');
-                                        divMod.className = `pl-7 text-[10px] flex justify-between cursor-pointer ${seciliKategoriPath[3]===model?'text-blue-600 font-bold':''}`;
-                                        divMod.innerHTML = `<span>↳ ${model}</span> <span>(${modSayi})</span>`;
-                                        divMod.onclick = (e) => { e.stopPropagation(); seciliKategoriPath = [ana, alt, marka, model]; filtreAksiyonlariniYonet(); };
-                                        alan.appendChild(divMod);
-                                    });
-                                }
+                                mKutu.appendChild(divM);
                             });
+                            alan.appendChild(mKutu);
                         }
                     });
                 }
@@ -522,21 +339,18 @@
 
         const filtreAksiyonlariniYonet = () => {
             const altK = seciliKategoriPath[1];
-            
-            document.getElementById('ozelOtomobilFiltreleri').classList.add('hidden');
-            document.getElementById('ozelArsaFiltreleri').classList.add('hidden');
-            document.getElementById('ozelDukkanFiltreleri').classList.add('hidden');
-
-            if(altK === 'Otomobil') document.getElementById('ozelOtomobilFiltreleri').classList.remove('hidden');
-            if(altK === 'Arsa') document.getElementById('ozelArsaFiltreleri').classList.remove('hidden');
-            if(altK && altK.includes('İş Yeri')) document.getElementById('ozelDukkanFiltreleri').classList.remove('hidden');
-
+            const otomobilFiltre = document.getElementById('ozelOtomobilFiltreleri');
+            if(otomobilFiltre) {
+                if(altK === 'Otomobil') otomobilFiltre.classList.remove('hidden');
+                else otomobilFiltre.classList.add('hidden');
+            }
             kategoriAgaciniOlustur();
             ilanlariFiltreleVeListele();
         };
 
         const ilanlariFiltreleVeListele = () => {
             const kutu = document.getElementById('ilanListesi');
+            if(!kutu) return;
             let sonuclar = [...globalIlanlar];
 
             const p = seciliKategoriPath;
@@ -544,50 +358,6 @@
                 sonuclar = sonuclar.filter(i => i.anaKategori === p[0]);
                 if(p[1]) sonuclar = sonuclar.filter(i => i.altKategori === p[1]);
                 if(p[2]) sonuclar = sonuclar.filter(i => i.marka === p[2]);
-                if(p[3]) sonuclar = sonuclar.filter(i => i.model === p[3]);
-            }
-
-            if(aramaKelimesi.trim() !== "") {
-                let kelime = aramaKelimesi.toLowerCase();
-                sonuclar = sonuclar.filter(i => i.baslik.toLowerCase().includes(kelime) || i.aciklama.toLowerCase().includes(kelime));
-            }
-
-            const ilVal = document.getElementById('filtreIl').value;
-            const ilceVal = document.getElementById('filtreIlce').value;
-            if(ilVal) sonuclar = sonuclar.filter(i => i.il === ilVal);
-            if(ilceVal) sonuclar = sonuclar.filter(i => i.ilce === ilceVal);
-
-            const minF = document.getElementById('filtreMinFiyat').value;
-            const maxF = document.getElementById('filtreMaxFiyat').value;
-            if(minF) sonuclar = sonuclar.filter(i => Number(i.fiyat) >= Number(minF));
-            if(maxF) sonuclar = sonuclar.filter(i => Number(i.fiyat) <= Number(maxF));
-
-            if(p[1] === 'Otomobil') {{
-                const minY = document.getElementById('filtreMinYil').value;
-                const maxY = document.getElementById('filtreMaxYil').value;
-                if(minY) sonuclar = sonuclar.filter(i => Number(i.yil || 0) >= Number(minY));
-                if(maxY) sonuclar = sonuclar.filter(i => Number(i.yil || 0) <= Number(maxY));
-
-                const minK = document.getElementById('filtreMinKm').value;
-                const maxK = document.getElementById('filtreMaxKm').value;
-                if(minK) sonuclar = sonuclar.filter(i => Number(i.km || 0) >= Number(minK));
-                if(maxK) sonuclar = sonuclar.filter(i => Number(i.km || 0) <= Number(maxK));
-
-                const vit = document.getElementById('filtreVites').value;
-                if(vit) sonuclar = sonuclar.filter(i => i.vites === vit);
-
-                if(document.getElementById('filtreAgirKayit').checked) sonuclar = sonuclar.filter(i => i.agirHasar === 'Var');
-                if(document.getElementById('filtrePert').checked) sonuclar = sonuclar.filter(i => i.pertDurumu === 'Var');
-            }
-
-            if(p[1] === 'Arsa') {
-                const imar = document.getElementById('filtreImarDurumu').value;
-                if(imar) sonuclar = sonuclar.filter(i => i.imarDurumu === imar);
-            }
-
-            if(p[1] && p[1].includes('İş Yeri')) {
-                const devr = document.getElementById('filtreDevren').value;
-                if(devr) sonuclar = sonuclar.filter(i => i.devrenDurumu === devr);
             }
 
             document.getElementById('ilanSayac').textContent = `${sonuclar.length} İlan`;
@@ -605,11 +375,6 @@
                 div.className = "bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-md cursor-pointer transition flex flex-col";
                 div.onclick = () => ilanDetayAc(i);
                 
-                let ekstraBilgi = '';
-                if(i.altKategori==='Otomobil') ekstraBilgi = `<p class="text-[10px] text-gray-500 mt-1">🚗 ${i.marka} ${i.model} | ${i.yil}</p>`;
-                if(i.altKategori==='Arsa') ekstraBilgi = `<p class="text-[10px] text-gray-500 mt-1">🏞️ İmar: ${i.imarDurumu} | Ada:${i.ada} Parsel:${i.parsel}</p>`;
-                if(i.altKategori && i.altKategori.includes('İş Yeri')) ekstraBilgi = `<p class="text-[10px] text-gray-500 mt-1">🏢 ${i.devrenDurumu} | ${i.metrekare} m²</p>`;
-
                 div.innerHTML = `
                     <div class="h-40 bg-gray-100"><img src="${resim}" class="w-full h-full object-cover"></div>
                     <div class="p-3 flex-1 flex flex-col justify-between">
@@ -617,7 +382,7 @@
                             <span class="text-[10px] bg-red-50 text-red-600 px-2 py-0.5 rounded-full font-bold mb-1 inline-block">${i.altKategori}</span>
                             <h4 class="font-bold text-gray-900 line-clamp-2">${i.baslik}</h4>
                             <p class="text-[11px] text-gray-400 mt-1">📍 ${i.il} / ${i.ilce}</p>
-                            ${ekstraBilgi}
+                            ${i.marka ? `<p class="text-[10px] text-gray-500 mt-1">🚗 ${i.marka} ${i.model}</p>` : ''}
                         </div>
                         <div class="text-right mt-3 font-black text-red-600 text-md border-t pt-2">${Number(i.fiyat).toLocaleString('tr-TR')} TL</div>
                     </div>
@@ -632,7 +397,7 @@
             if(i.gorseller) i.gorseller.forEach(g => gHtml += `<img src="${g}" class="max-h-64 object-contain bg-black rounded-lg">`);
 
             document.getElementById('ilanDetayIcerikAlani').innerHTML = `
-                <div class="bg-white border rounded-xl p-4 md:p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="bg-white border rounded-xl p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <div class="lg:col-span-2 space-y-4">
                         <div class="flex gap-2 overflow-x-auto p-2 bg-gray-900 rounded-xl no-scrollbar">${gHtml}</div>
                         <div class="border-t pt-3">
@@ -647,9 +412,6 @@
                             <div><strong>Kategori:</strong> ${i.anaKategori} / ${i.altKategori}</div>
                             ${i.marka ? `<div><strong>Marka / Model:</strong> ${i.marka} / ${i.model}</div>` : ''}
                             <div><strong>Konum:</strong> ${i.il} / ${i.ilce}</div>
-                            ${i.imarDurumu ? `<div><strong>İmar Durumu:</strong> ${i.imarDurumu}</div>` : ''}
-                            ${i.ada ? `<div><strong>Ada / Parsel:</strong> ${i.ada} / ${i.parsel}</div>` : ''}
-                            ${i.devrenDurumu ? `<div><strong>Mülk Tipi:</strong> ${i.devrenDurumu}</div>` : ''}
                         </div>
                     </div>
                 </div>
@@ -673,43 +435,20 @@
             const al = document.getElementById('formAltKat').value;
             
             document.getElementById('formOtomobilAlanlari').classList.add('hidden');
-            document.getElementById('formArsaAlanlari').classList.add('hidden');
-            document.getElementById('formDukkanAlanlari').classList.add('hidden');
             document.getElementById('formMarkaBlok').classList.add('hidden');
             document.getElementById('formModelBlok').classList.add('hidden');
 
             if(al === 'Otomobil') {
                 document.getElementById('formOtomobilAlanlari').classList.remove('hidden');
                 document.getElementById('formMarkaBlok').classList.remove('hidden');
-                formMarkalariYukle();
-            } else if(al === 'Arsa') {
-                document.getElementById('formArsaAlanlari').classList.remove('hidden');
-            } else if(al && al.includes('İş Yeri')) {
-                document.getElementById('formDukkanAlanlari').classList.remove('hidden');
+                document.getElementById('formModelBlok').classList.remove('hidden');
+                
+                const mSel = document.getElementById('formMarka'); mSel.innerHTML = "";
+                tumArabaMarkalari.forEach(m => mSel.innerHTML += `<option value="${m}">${m}</option>`);
+                
+                const moSel = document.getElementById('formModel');
+                moSel.innerHTML = '<option value="Genel Model">Genel Model</option>';
             }
-        };
-
-        const formMarkalariYukle = () => {
-            const mSel = document.getElementById('formMarka'); mSel.innerHTML = "";
-            Object.keys(kategoriSemasi["Vasıta"]["Otomobil"]).forEach(m => mSel.innerHTML += `<option value="${m}">${m}</option>`);
-            document.getElementById('formModelBlok').classList.remove('hidden');
-            formModelleriYukle();
-        };
-
-        const formModelleriYukle = () => {
-            const m = document.getElementById('formMarka').value;
-            const moSel = document.getElementById('formModel'); moSel.innerHTML = "";
-            Object.keys(kategoriSemasi["Vasıta"]["Otomobil"][m] || {}).forEach(mod => moSel.innerHTML += `<option value="${mod}">${mod}</option>`);
-            document.getElementById('formPaketBlok').classList.remove('hidden');
-            formPaketleriYukle();
-        };
-
-        const formPaketleriYukle = () => {
-            const m = document.getElementById('formMarka').value;
-            const mod = document.getElementById('formModel').value;
-            const pSel = document.getElementById('formPaket'); pSel.innerHTML = "";
-            const paketler = kategoriSemasi["Vasıta"]["Otomobil"][m][mod] || [];
-            paketler.forEach(p => pSel.innerHTML += `<option value="${p}">${p}</option>`);
         };
 
         document.getElementById('anaMulkForm').onsubmit = async function(e) {
@@ -728,16 +467,7 @@
                     fiyat: document.getElementById('formFiyat').value,
                     il: document.getElementById('formIl').value,
                     ilce: document.getElementById('formIlce').value,
-                    km: document.getElementById('formKm').value || "",
-                    yil: document.getElementById('formYil').value || "",
-                    vites: document.getElementById('formVites').value || "",
-                    imarDurumu: document.getElementById('formImarDurumu').value || "",
-                    ada: document.getElementById('formAda').value || "",
-                    parsel: document.getElementById('formParsel').value || "",
-                    devrenDurumu: document.getElementById('formDevren').value || "",
-                    metrekare: document.getElementById('formMetrekare').value || "",
                     gorseller: resimlerListesi,
-                    sahipEposta: auth.currentUser.email,
                     tarih: new Date().toISOString()
                 });
                 alert("İlanınız Canlıya Alındı!");
@@ -757,32 +487,30 @@
         };
 
         const ilanlariCek = async () => {
-            const snap = await getDocs(collection(db, "ilanlar"));
-            globalIlanlar = [];
-            snap.forEach(d => globalIlanlar.push({ id: d.id, ...d.data() }));
+            try {
+                const snap = await getDocs(collection(db, "ilanlar"));
+                globalIlanlar = [];
+                snap.forEach(d => globalIlanlar.push({ id: d.id, ...d.data() }));
+            } catch(e) { console.log("Veri çekilemedi, local modda çalışılıyor."); }
             filtreAksiyonlariniYonet();
         };
 
+        // Event Listener Bağlantıları
         document.getElementById('logoBtn').onclick = () => { seciliKategoriPath = ['hepsi']; filtreAksiyonlariniYonet(); ekranGoster('ana'); };
         document.getElementById('detaydanGeriDonBtn').onclick = () => ekranGoster('ana');
         document.getElementById('yeniIlanEkleLink').onclick = () => { ekranGoster('form'); formKademeleriDoldur(); };
         document.getElementById('kilitliAlanGirisBtn').onclick = googleGirisAksiyon;
         document.getElementById('hizliAraBtn').onclick = () => { aramaKelimesi = document.getElementById('hizliAraInput').value; ilanlariFiltreleVeListele(); };
         document.getElementById('filtreleriUygulaBtn').onclick = ilanlariFiltreleVeListele;
-
         document.getElementById('formAnaKat').onchange = formAltKatDegisti;
         document.getElementById('formAltKat').onchange = formOzellikAlanlariniYonet;
-        document.getElementById('formMarka').onchange = formModelleriYukle;
 
-        const adresBirimleriniYukle = () => {
-            const fIl = document.getElementById('filtreIl'); const formIl = document.getElementById('formIl');
-            fIl.innerHTML = '<option value="">Tüm İller</option>'; formIl.innerHTML = '<option value="">Seçiniz</option>';
-            Object.keys(sehirData).forEach(sehir => {
-                fIl.innerHTML += `<option value="${sehir}">${sehir}</option>`;
-                formIl.innerHTML += `<option value="${sehir}">${sehir}</option>`;
-            });
-        };
-
+        // Şehir ve İlçe Yapılandırması
+        const fIl = document.getElementById('filtreIl'); const formIl = document.getElementById('formIl');
+        Object.keys(sehirData).forEach(sehir => {
+            fIl.innerHTML += `<option value="${sehir}">${sehir}</option>`;
+            formIl.innerHTML += `<option value="${sehir}">${sehir}</option>`;
+        });
         document.getElementById('filtreIl').onchange = (e) => {
             const ilce = document.getElementById('filtreIlce'); ilce.innerHTML = '<option value="">Tüm İlçeler</option>';
             if(sehirData[e.target.value]) sehirData[e.target.value].forEach(i => ilce.innerHTML += `<option value="${i}">${i}</option>`);
@@ -792,9 +520,9 @@
             if(sehirData[e.target.value]) sehirData[e.target.value].forEach(i => ilce.innerHTML += `<option value="${i}">${i}</option>`);
         };
 
+        // Firebase Başlangıç Kontrolü
         auth.onAuthStateChanged(user => {
             oturumArayuzunuGuncelle();
-            adresBirimleriniYukle();
             ilanlariCek();
         });
     </script>
