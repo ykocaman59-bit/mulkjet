@@ -40,7 +40,7 @@
     <div id="profilGorunumu" class="hidden max-w-2xl mx-auto px-4 py-6">
         <div class="bg-white p-6 border rounded-xl space-y-4 shadow-xs">
             <div class="flex justify-between items-center border-b pb-2">
-                <h2 class="text-xl font-bold">👤 Profil Bilgilerim</h2>
+                <h2 class="text-xl font-bold">👤 Profil Bilgilerim ve İletişim</h2>
                 <button type="button" id="profilKapatBtn" class="text-xs text-gray-500 font-bold cursor-pointer">Kapat</button>
             </div>
             <div class="space-y-3">
@@ -49,14 +49,14 @@
                     <input type="text" id="profAdSoyad" class="w-full p-2 border rounded-lg text-xs">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-gray-600 mb-1">İletişim Numaraları (Maks 3)</label>
+                    <label class="block text-xs font-bold text-gray-600 mb-1">İletişim / Telefon Numaralarınız (İlanlarda Gözükecek)</label>
                     <div class="space-y-2">
-                        <input type="tel" placeholder="Telefon 1" class="profTelInput w-full p-2 border rounded-lg text-xs">
-                        <input type="tel" placeholder="Telefon 2" class="profTelInput w-full p-2 border rounded-lg text-xs">
-                        <input type="tel" placeholder="Telefon 3" class="profTelInput w-full p-2 border rounded-lg text-xs">
+                        <input type="tel" id="profTel1" placeholder="Telefon 1 (Örn: 0532 111 2233)" class="w-full p-2 border rounded-lg text-xs">
+                        <input type="tel" id="profTel2" placeholder="Telefon 2 (Opsiyonel)" class="w-full p-2 border rounded-lg text-xs">
+                        <input type="tel" id="profTel3" placeholder="Telefon 3 (Opsiyonel)" class="w-full p-2 border rounded-lg text-xs">
                     </div>
                 </div>
-                <button type="button" id="profilKaydetBtn" class="w-full bg-green-600 text-white font-bold py-2 rounded-xl text-xs cursor-pointer">Kaydet</button>
+                <button type="button" id="profilKaydetBtn" class="w-full bg-green-600 text-white font-bold py-2 rounded-xl text-xs cursor-pointer">Bilgileri Kaydet</button>
             </div>
             <div class="border-t pt-4 mt-6">
                 <button type="button" id="hesapSilmePanelAcBtn" class="text-xs font-bold text-red-600 hover:underline cursor-pointer">⚠️ Hesabımı Sil</button>
@@ -195,7 +195,7 @@
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-gray-600">Başlık</label>
-                        <input type="text" id="formBaslik" required class="w-full p-2 border rounded-lg text-xs">
+                        <input type="text" id="formBaslik" required class="w-full p-2 border rounded-lg text-xs" placeholder="Örn: Sahibinden Temiz Aile Aracı">
                     </div>
                 </div>
 
@@ -359,7 +359,7 @@
         };
 
         const turkiyeAdresHaritasi = {
-            "İstanbul": ["Sultanbeyli", "Kadıköy", "Pendik", "Ümraniye", "Maltepe", "Şişli", "Fatih", "Esenyurt", "Tuzla", "Kartal"],
+            "İstanbul": ["Sultanbeyli", "Kadıköy", "Pendik", "Ümraniye", "Maltepe", "Şişli", "Fatih", "Esenyurt", "Tuzla", "Kartal", "Üsküdar", "Beşiktaş", "Bakırköy"],
             "Ankara": ["Çankaya", "Keçiören", "Yenimahalle", "Mamak", "Etimesgut", "Sincan", "Altındağ"],
             "İzmir": ["Konak", "Karşıyaka", "Bornova", "Buca", "Çiğli", "Gaziemir", "Torbalı"],
             "Bursa": ["Nilüfer", "Osmangazi", "Yıldırım", "Mudanya", "İnegöl"],
@@ -367,36 +367,114 @@
             "Adana": ["Seyhan", "Çukurova", "Yüreğir", "Sarıçam"],
             "Konya": ["Selçuklu", "Meram", "Karatay"],
             "Gaziantep": ["Şahinbey", "Şehitkamil"],
-            "Kocaeli": ["İzmit", "Gebze", "Darica", "Körfez"],
+            "Kocaeli": ["İzmit", "Gebze", "Darıca", "Körfez"],
             "Samsun": ["Atakum", "İlkadım", "Canik"]
         };
         const digerIller = ["Afyonkarahisar","Ağrı","Aksaray","Amasya","Ardahan","Artvin","Aydın","Balıkesir","Bartın","Batman","Bayburt","Bilecik","Bingöl","Bitlis","Bolu","Burdur","Çanakkale","Çankırı","Çorum","Denizli","Diyarbakır","Düzce","Edirne","Elazığ","Erzincan","Erzurum","Eskişehir","Hakkari","Hatay","Iğdır","Isparta","Kahramanmaraş","Karabük","Karaman","Kars","Kastamonu","Kayseri","Kırıkkale","Kırklareli","Kırşehir","Kilis","Kütahya","Malatya","Manisa","Mardin","Mersin","Muğla","Muş","Nevşehir","Niğde","Ordu","Osmaniye","Rize","Sakarya","Şanlıurfa","Siirt","Sinop","Sivas","Şırnak","Tekirdağ","Tokat","Trabzon","Tunceli","Uşak","Van","Yalova","Yozgat","Zonguldak"];
         digerIller.forEach(il => { turkiyeAdresHaritasi[il] = ["Merkez", "İlçe 1", "İlçe 2"]; });
 
+        // DEV ARABA VERİTABANI (Tüm Marka, Zengin Model, Paket ve Motor Kombinasyonları)
         const devArabaVeritabani = {
             "Renault": {
-                "Megane": { pakets: ["Icon", "Touch", "Joy", "Extreme"], motors: ["1.3 TCe", "1.5 dCi", "1.6 16V", "1.2 TCe"] },
-                "Clio": { pakets: ["Joy", "Touch", "Icon", "Techno", "RS"], motors: ["0.9 TCe", "1.0 TCe", "1.5 dCi", "1.2 PureTech"] },
-                "Fluence": { pakets: ["Touch", "Icon", "Privilege"], motors: ["1.5 dCi", "1.6 16V"] },
-                "Talisman": { pakets: ["Icon", "Touch"], motors: ["1.6 dCi", "2.0 dCi"] },
-                "Kadjar": { pakets: ["Icon", "Touch"], motors: ["1.5 dCi", "1.6 dCi"] }
+                "Megane": { pakets: ["Joy", "Touch", "Icon", "Limited", "GT-Line", "Techno"], motors: ["1.3 TCe (140 bg)", "1.3 TCe (160 bg)", "1.5 dCi (110 bg)", "1.5 dCi EDC", "1.6 16V", "1.2 TCe"] },
+                "Clio": { pakets: ["Joy", "Touch", "Icon", "Techno Esprit Alpine", "RS Line"], motors: ["1.0 TCe (100 bg)", "1.0 TCe X-Tronic", "0.9 TCe", "1.5 dCi", "1.2 PureTech"] },
+                "Fluence": { pakets: ["Joy", "Touch", "Icon", "Privilege", "Business"], motors: ["1.5 dCi (90 bg)", "1.5 dCi (110 bg)", "1.6 16V"] },
+                "Talisman": { pakets: ["Icon", "Touch", "Business"], motors: ["1.6 dCi (130 bg)", "1.6 TCe (200 bg)", "2.0 Blue dCi"] },
+                "Kadjar": { pakets: ["Touch", "Icon", "Addict"], motors: ["1.5 dCi", "1.3 TCe", "1.6 dCi"] },
+                "Captur": { pakets: ["Touch", "Icon", "Joy", "R.S. Line"], motors: ["1.0 TCe", "1.3 TCe", "1.5 dCi", "1.6 E-Tech Hybrid"] },
+                "Austral": { pakets: ["Techno", "Techno Esprit Alpine", "Iconic Esprit Alpine"], motors: ["1.33 E-Tech Full Hybrid (200 bg)", "1.3 TCe Mild Hybrid"] },
+                "Symbol": { pakets: ["Joy", "Touch"], motors: ["0.9 TCe", "1.2 16V", "1.5 dCi"] },
+                "Scenic": { pakets: ["Privilege", "Expression", "Icon"], motors: ["1.5 dCi", "1.6 16V"] },
+                "Laguna": { pakets: ["Dynamique", "Expression", "Privilege"], motors: ["1.6 16V", "2.0 16V", "1.5 dCi"] },
+                "Master": { pakets: ["Panelvan", "Minibüs", "Kamyonet"], motors: ["2.3 dCi (130 bg)", "2.3 dCi (145 bg)", "2.3 dCi (165 bg)"] }
             },
             "Fiat": {
-                "Egea": { pakets: ["Easy", "Urban", "Lounge", "Cross", "Mirror"], motors: ["1.4 Fire", "1.3 Multijet", "1.6 Multijet", "1.5 T4 Hybrid"] },
-                "Linea": { pakets: ["Pop", "Easy", "Urban", "Lounge"], motors: ["1.3 Multijet", "1.6 Multijet", "1.4 Fire"] },
-                "Punto": { pakets: ["Pop", "Lounge", "Evo"], motors: ["1.3 Multijet", "1.4 Fire", "1.2 Pop"] }
+                "Egea": { pakets: ["Easy", "Urban", "Lounge", "Cross", "Cross Wagon", "Mirror", "Street"], motors: ["1.4 Fire (95 bg)", "1.3 Multijet (95 bg)", "1.6 Multijet (120 bg)", "1.5 T4 Hybrid (130 bg)"] },
+                "Linea": { pakets: ["Pop", "Easy", "Urban", "Lounge", "Emotion"], motors: ["1.3 Multijet (95 bg)", "1.6 Multijet (105 bg)", "1.4 Fire (77 bg)"] },
+                "Punto": { pakets: ["Pop", "Lounge", "Evo", "Active", "Dynamic"], motors: ["1.3 Multijet", "1.4 Fire", "1.2 Pop"] },
+                "Fiorino": { pakets: ["Pop", "Premio", "Combi", "Cargo"], motors: ["1.3 Multijet (75 bg)", "1.3 Multijet (95 bg)"] },
+                "Doblo": { pakets: ["Premio", "Elegance", "Active", "Safeline"], motors: ["1.3 Multijet", "1.6 Multijet", "2.0 Multijet"] },
+                "Tipo": { pakets: ["Base", "Plus"], motors: ["1.4 Benzinli", "1.6 Dizel"] },
+                "Ducato": { pakets: ["Van", "Minibüs", "Kamyonet"], motors: ["2.3 Multijet (130 bg)", "2.3 Multijet (140 bg)", "2.2 Multijet"] }
             },
             "Volkswagen": {
-                "Passat": { pakets: ["Trendline", "Comfortline", "Highline", "Elegance"], motors: ["1.6 TDI", "1.5 TSI", "2.0 TDI"] },
-                "Golf": { pakets: ["Impression", "Life", "Style", "R-Line"], motors: ["1.0 TSI", "1.5 eTSI", "1.6 TDI"] },
-                "Polo": { pakets: ["Trendline", "Comfortline", "Highline"], motors: ["1.0 TSI", "1.4 TDI"] }
+                "Passat": { pakets: ["Trendline", "Comfortline", "Highline", "Elegance", "R-Line", "Business"], motors: ["1.6 TDI (120 bg)", "1.5 TSI (150 bg)", "2.0 TDI (150 bg)", "2.0 TDI 4Motion", "1.4 TSI"] },
+                "Golf": { pakets: ["Impression", "Life", "Style", "R-Line", "GTI", "R"], motors: ["1.0 TSI (110 bg)", "1.5 eTSI (150 bg)", "1.6 TDI (115 bg)", "2.0 TDI", "2.0 TSI"] },
+                "Polo": { pakets: ["Trendline", "Comfortline", "Highline", "Life", "Style"], motors: ["1.0 TSI", "1.4 TDI", "1.2 TSI", "1.4 Benzinli"] },
+                "Tiguan": { pakets: ["Life", "Elegance", "R-Line", "Comfortline", "Highline"], motors: ["1.5 TSI", "2.0 TDI", "2.0 TSI"] },
+                "Jetta": { pakets: ["Trendline", "Comfortline", "Highline"], motors: ["1.6 TDI", "1.4 TSI", "1.2 TSI"] },
+                "Transporter": { pakets: ["Cityvan", "Van", "Kombi", "Camgöz"], motors: ["2.0 TDI (102 bg)", "2.0 TDI (140 bg)", "2.0 TDI (150 bg)", "2.0 BiTDI (204 bg)"] },
+                "Arteon": { pakets: ["Elegance", "R-Line"], motors: ["1.5 TSI", "2.0 TDI", "2.0 TSI 4Motion"] }
+            },
+            "BMW": {
+                "1 Serisi": { pakets: ["Sport Line", "M Sport", "Joy"], motors: ["1.16d", "1.18i", "1.20d"] },
+                "3 Serisi": { pakets: ["Luxury Line", "M Sport", "First Edition", "Modern Line"], motors: ["3.16i", "3.20d", "3.20i Ed", "3.30i", "M3"] },
+                "5 Serisi": { pakets: ["Luxury Line", "M Sport", "Executive"], motors: ["5.20d", "5.30i", "5.30d", "M550d"] },
+                "X1": { pakets: ["xLine", "M Sport", "Advantage"], motors: ["sDrive16d", "sDrive18i", "xDrive20d"] },
+                "X3": { pakets: ["xLine", "M Sport"], motors: ["xDrive20d", "M40i"] },
+                "X5": { pakets: ["Pure Experience", "M Sport", "xLine"], motors: ["xDrive25d", "xDrive30d", "M50d"] },
+                "4 Serisi": { pakets: ["M Sport", "Luxury Line"], motors: ["420d", "430i", "M4"] }
+            },
+            "Mercedes-Benz": {
+                "A Serisi": { pakets: ["AMG", "Style", "Progressive"], motors: ["A180", "A200", "A200d"] },
+                "C Serisi": { pakets: ["AMG", "Exclusive", "Prime", "Fascination"], motors: ["C180", "C200d", "C300", "C63 AMG"] },
+                "E Serisi": { pakets: ["AMG", "Exclusive", "Avantgarde"], motors: ["E180", "E200d", "E220d", "E300"] },
+                "S Serisi": { pakets: ["Long", "Maybach", "AMG"], motors: ["S350d", "S400", "S500"] },
+                "GLA": { pakets: ["AMG", "Progressive", "Style"], motors: ["GLA 180", "GLA 200", "GLA 200d"] },
+                "GLC": { pakets: ["AMG", "Exclusive"], motors: ["GLC 200d", "GLC 300"] },
+                "Sprinter": { pakets: ["Panelvan", "Minibüs"], motors: ["314 CDI", "316 CDI", "319 CDI"] }
+            },
+            "Audi": {
+                "A3": { pakets: ["Advanced", "S Line", "Design", "Dynamic"], motors: ["30 TFSI", "35 TFSI", "35 TDI"] },
+                "A4": { pakets: ["Design", "Sport", "S Line", "Advanced"], motors: ["35 TFSI", "40 TDI", "45 TFSI"] },
+                "A6": { pakets: ["Design", "Sport", "S Line", "Executive"], motors: ["40 TDI", "45 TFSI", "50 TDI"] },
+                "Q3": { pakets: ["Advanced", "S Line", "Design"], motors: ["35 TFSI", "35 TDI"] },
+                "Q5": { pakets: ["Advanced", "S Line"], motors: ["40 TDI", "45 TFSI"] }
+            },
+            "Ford": {
+                "Focus": { pakets: ["Trend X", "Titanium", "ST-Line", "Active", "Trend"], motors: ["1.5 Ecoboost", "1.5 TDCi", "1.0 Ecoboost", "1.6 Ti-VCT"] },
+                "Fiesta": { pakets: ["Trend", "Titanium", "ST-Line"], motors: ["1.0 Ecoboost", "1.5 TDCi", "1.25 Benzinli"] },
+                "Kuga": { pakets: ["Trend", "Titanium", "ST-Line", "Vignale"], motors: ["1.5 Ecoboost", "1.5 Ecoblue", "2.0 Ecoblue"] },
+                "Mondeo": { pakets: ["Trend", "Titanium", "Select"], motors: ["1.5 Ecoboost", "2.0 TDCi"] },
+                "Transit": { pakets: ["Panelvan", "Kamyonet", "Minibüs"], motors: ["2.0 Ecoblue (130 bg)", "2.0 Ecoblue (170 bg)", "2.0 Ecoblue (185 bg)"] },
+                "Ranger": { pakets: ["Wildtrak", "XLT", "Stormtrak", "Raptor"], motors: ["2.0 EcoBlue", "3.0 V6 EcoBlue"] }
+            },
+            "Toyota": {
+                "Corolla": { pakets: ["Vision", "Dream", "Flame", "Passion", "Hybrid"], motors: ["1.5 Vision", "1.8 Hybrid", "1.6 Valvematic"] },
+                "Yaris": { pakets: ["Dream", "Flame", "Style", "Hybrid"], motors: ["1.0 Benzinli", "1.5 Hybrid", "1.5 Benzinli"] },
+                "RAV4": { pakets: ["Flame", "Passion", "Adventure", "Hybrid"], motors: ["2.5 Hybrid"] },
+                "C-HR": { pakets: ["Flame", "Passion", "Advance", "Hybrid"], motors: ["1.2 Turbo", "1.8 Hybrid"] },
+                "Hilux": { pakets: ["Adventure", "Invincible", "Hi-Cruiser"], motors: ["2.4 D-4D", "2.8 D-4D"] }
+            },
+            "Honda": {
+                "Civic": { pakets: ["Dream", "Premium", "Elegance", "Executive+", "RS"], motors: ["1.5 VTEC Turbo", "1.6 i-VTEC", "2.0 Type-R"] },
+                "CR-V": { pakets: ["Dream", "Elegance", "Executive", "Hybrid"], motors: ["1.5 VTEC Turbo", "2.0 i-MMD Hybrid"] },
+                "HR-V": { pakets: ["Executive", "Style", "Advance"], motors: ["1.5 i-VTEC", "1.5 e:HEV Hybrid"] }
+            },
+            "Hyundai": {
+                "i20": { pakets: ["Jump", "Style", "Elite", "Assos"], motors: ["1.4 MPI", "1.0 T-GDI"] },
+                "Elantra": { pakets: ["Style", "Prime", "Elite"], motors: ["1.6 MPI", "1.6 CRDi"] },
+                "Tucson": { pakets: ["Prime", "Elite", "Elite Plus", "N Line"], motors: ["1.6 T-GDI", "1.6 CRDi", "1.6 Hybrid"] },
+                "Bayon": { pakets: ["Jump", "Style", "Elite"], motors: ["1.4 MPI", "1.0 T-GDI"] }
+            },
+            "Togg": {
+                "T10X": { pakets: ["V1 Standard", "V2 Standard", "V2 Long Range"], motors: ["RWD (218 bg) Elektrikli", "AWD (435 bg) Elektrikli"] }
             }
         };
 
         const tumMarkaListesi = ["Audi","BMW","Citroen","Dacia","Fiat","Ford","Honda","Hyundai","Kia","Mercedes-Benz","Nissan","Opel","Peugeot","Renault","Seat","Skoda","Toyota","Volkswagen","Volvo","Togg","Alfa Romeo","Cupra","Chery","Chevrolet","Chrysler","Geely","Jeep","Land Rover","Mazda","MG","Mini","Mitsubishi","Porsche","Subaru","Suzuki","Tata"];
         tumMarkaListesi.forEach(m => {
             if(!devArabaVeritabani[m]) {
-                devArabaVeritabani[m] = { "Genel Model": { pakets: ["Standart Paket"], motors: ["1.5 Motor", "1.6 Motor", "2.0 Motor"] } };
+                devArabaVeritabani[m] = { 
+                    "Genel Model": { 
+                        pakets: ["Standart", "Comfort", "Deluxe", "Exclusive"], 
+                        motors: ["1.3 Motor", "1.5 Motor", "1.6 Motor", "2.0 Motor", "Elektrikli"] 
+                    },
+                    "Özel Seri": {
+                        pakets: ["Full Paket", "Sport", "Business"],
+                        motors: ["1.6 Turbo", "2.0 Dizel"]
+                    }
+                };
             }
         });
 
@@ -576,7 +654,23 @@
 
             const tamKonumMetni = `${i.il} ${i.ilce} ${i.mahalle || ''} ${i.sokak || ''}`;
             const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(tamKonumMetni)}`;
-            const waUrl = `https://wa.me/?text=${encodeURIComponent('Mülkjet İlanı: ' + i.baslik)}`;
+            
+            // SAHİBİNDEN.COM TARZI DETAYLI WHATSAPP PAYLAŞIM METNİ
+            const sahibindenTarziMetin = 
+`🚀 MÜLKJET İLAN PAYLAŞIMI
+----------------------------------
+📌 İlan Başlığı: ${i.baslik}
+🏷️ Kategori: ${i.altKategori}
+💰 Fiyat: ${Number(i.fiyat).toLocaleString('tr-TR')} TL
+📍 Konum: ${i.il} / ${i.ilce} (${i.mahalle || ''})
+${i.altKategori === 'Otomobil' ? `🚗 Marka/Model: ${i.marka} ${i.model} (${i.yil || '-'} Model)\n⚡ Kilometre: ${i.km || '-'} KM\n🛠️ Hasar Durumu: ${i.hasarDurumu || 'Yok'}` : ''}
+----------------------------------
+📞 İletişim Telefonu: ${i.telefon1 || 'Belirtilmemiş'}
+💬 Açıklama: ${i.aciklama}
+
+Detaylar için Mülkjet Pro'yu ziyaret edin!`;
+
+            const waUrl = `https://wa.me/?text=${encodeURIComponent(sahibindenTarziMetin)}`;
 
             let otoEkstraHtml = "";
             if(i.altKategori === 'Otomobil') {
@@ -584,6 +678,9 @@
                     <div class="bg-white p-3 border rounded-xl space-y-2 text-xs">
                         <h4 class="font-bold border-b pb-1 text-gray-700">📋 Araç Ekspertiz & Tramer Raporu</h4>
                         <div class="grid grid-cols-2 gap-2 text-gray-600">
+                            <div><strong>Marka/Model:</strong> ${i.marka} ${i.model}</div>
+                            <div><strong>Paket:</strong> ${i.paket || '-'}</div>
+                            <div><strong>Motor Hacmi:</strong> ${i.motor || '-'}</div>
                             <div><strong>Model Yılı:</strong> ${i.yil || '-'}</div>
                             <div><strong>KM Durumu:</strong> ${i.km || '-'}</div>
                             <div><strong>Hasar Kaydı:</strong> ${i.hasarDurumu || 'Yok'}</div>
@@ -605,13 +702,22 @@
                     </div>
                     <div class="bg-white p-4 border rounded-xl space-y-4 h-fit shadow-xs">
                         <div class="text-2xl font-black text-red-600">${Number(i.fiyat).toLocaleString('tr-TR')} TL</div>
+                        
+                        <!-- İLETİŞİM TELEFON BİLGİSİ KUTUSU -->
+                        <div class="bg-red-50 border border-red-200 p-3 rounded-xl space-y-1">
+                            <span class="block text-[10px] font-bold text-red-600 uppercase tracking-wide">📞 İlan Sahibi İletişim</span>
+                            <div class="text-sm font-black text-gray-900">${i.telefon1 || 'Telefon Belirtilmemiş'}</div>
+                            ${i.telefon2 ? `<div class="text-xs font-bold text-gray-700">${i.telefon2}</div>` : ''}
+                            ${i.telefon3 ? `<div class="text-xs font-bold text-gray-700">${i.telefon3}</div>` : ''}
+                        </div>
+
                         <div class="text-xs space-y-1.5 border-t border-b py-2 text-gray-600">
                             <div><strong>Lokasyon:</strong> ${i.il} / ${i.ilce}</div>
                             <div><strong>Açık Konum:</strong> ${i.mahalle} - ${i.sokak}</div>
                         </div>
                         <div class="space-y-2">
-                            <a href="${waUrl}" target="_blank" class="w-full bg-green-600 text-white font-bold py-2 rounded-xl text-xs flex justify-center items-center gap-2">💬 WhatsApp İle Paylaş</a>
-                            <a href="${mapsUrl}" target="_blank" class="w-full bg-orange-500 text-white font-bold py-2 rounded-xl text-xs flex justify-center items-center gap-2">📍 Haritada Nokta Atışı Göster</a>
+                            <a href="${waUrl}" target="_blank" class="w-full bg-green-600 text-white font-bold py-2 rounded-xl text-xs flex justify-center items-center gap-2 cursor-pointer shadow-xs">💬 WhatsApp İle Detaylı Paylaş</a>
+                            <a href="${mapsUrl}" target="_blank" class="w-full bg-orange-500 text-white font-bold py-2 rounded-xl text-xs flex justify-center items-center gap-2 cursor-pointer shadow-xs">📍 Haritada Nokta Atışı Göster</a>
                         </div>
                         ${silAktif}
                     </div>
@@ -656,6 +762,9 @@
                     tramer: document.getElementById('formTramer').value || "0",
                     sema: formSemaVerisi,
                     sahipEmail: u ? u.email : "anonim",
+                    telefon1: localStorage.getItem('user_tel1') || "Belirtilmemiş",
+                    telefon2: localStorage.getItem('user_tel2') || "",
+                    telefon3: localStorage.getItem('user_tel3') || "",
                     tarih: new Date().toISOString()
                 });
                 alert("İlanınız başarıyla yayına alındı!");
@@ -711,12 +820,20 @@
         document.getElementById('profilimBtn').onclick = () => {
             ekranGoster('profil');
             document.getElementById('profAdSoyad').value = localStorage.getItem('user_adsoyad') || "";
+            document.getElementById('profTel1').value = localStorage.getItem('user_tel1') || "";
+            document.getElementById('profTel2').value = localStorage.getItem('user_tel2') || "";
+            document.getElementById('profTel3').value = localStorage.getItem('user_tel3') || "";
         };
+
         document.getElementById('profilKaydetBtn').onclick = () => {
             localStorage.setItem('user_adsoyad', document.getElementById('profAdSoyad').value);
-            alert("Profil Kaydedildi.");
+            localStorage.setItem('user_tel1', document.getElementById('profTel1').value);
+            localStorage.setItem('user_tel2', document.getElementById('profTel2').value);
+            localStorage.setItem('user_tel3', document.getElementById('profTel3').value);
+            alert("Profil ve iletişim numaralarınız kaydedildi.");
             ekranGoster('ana');
         };
+
         document.getElementById('profilKapatBtn').onclick = () => ekranGoster('ana');
         document.getElementById('hesapSilmePanelAcBtn').onclick = () => ekranGoster('hesapsil');
         document.getElementById('hesapSilIptalBtn').onclick = () => ekranGoster('profil');
